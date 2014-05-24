@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_main_bg" >
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/logo" >
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:textColor="#f6d706"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/imgKid"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/default_photo" />
+
+        <TextView
+            android:id="@+id/textQuote"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignLeft="@+id/textName"
+            android:layout_below="@+id/imgKid"
+            android:layout_marginTop="21dp"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textQuote"
+            android:layout_marginLeft="58dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/btnRate"
+            android:background="@android:color/transparent"
+            android:src="@drawable/next" />
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textQuote"
+            android:layout_marginRight="58dp"
+            android:layout_marginTop="30dp"
+            android:layout_toLeftOf="@+id/btnRate"
+            android:background="@android:color/transparent"
+            android:src="@drawable/previous" />
+
+        <!-- <Button
+            android:id="@+id/btnFav"
+            style="@style/CustomStyleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnNext"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="MARK FAV" /> -->
+
+        <Button
+            android:id="@+id/btnRate"
+            style="@style/CustomStyleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnFav"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:text="RATE" />
+
+        <ImageButton
+            android:id="@+id/quoteShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btnFav"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/share" />
+    </RelativeLayout>
+
+</RelativeLayout>
