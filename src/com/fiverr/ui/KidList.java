@@ -74,10 +74,8 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 				finish();
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -85,16 +83,11 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 
 	@Override
 	protected void onPreExecute() {
-		// TODO Auto-generated method stub
-		//super.onPreExecute();
 		pDialog = ProgressDialog.show(KidList.this, "Talking To Server", "Loading");
 	}
 	
 	@Override
 	protected void onPostExecute(Void result) {
-		// TODO Auto-generated method stub
-		//super.onPostExecute(result);
-		
 		pDialog.dismiss();
 		ListView kidlist = (ListView) findViewById(R.id.listKids);
 		ListAdapter adapter = new com.fiverr.helper.ListAdapter(KidList.this, R.layout.list_item_kid_detail, kids);
@@ -102,9 +95,7 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 		kidlist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,		long arg3) {
 				Intent postQuote = new Intent(KidList.this,Submit.class);
 				postQuote.putExtra("kid_id", kids.get(arg2).getKid_ID());
 				startActivity(postQuote);

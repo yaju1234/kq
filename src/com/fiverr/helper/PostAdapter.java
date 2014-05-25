@@ -147,8 +147,8 @@ public class PostAdapter extends PagerAdapter {
 		ImageView child_img = (ImageView)convertView.findViewById(R.id.imgKid);
 		TextView child_quote=(TextView)convertView.findViewById(R.id.textQuote);
 		Button btn_fav =(Button)convertView.findViewById(R.id.btn_fav);
-		ImageView iv_rate =(ImageView)convertView.findViewById(R.id.iv_rate);
-		ImageView iv_share = (ImageView)convertView.findViewById(R.id.iv_share);
+		Button iv_rate =(Button)convertView.findViewById(R.id.iv_rate);
+		Button iv_share = (Button)convertView.findViewById(R.id.iv_share);
 		
 		if(quote_type.equals("fav")){
 			btn_fav.setVisibility(View.GONE);

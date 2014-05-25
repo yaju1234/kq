@@ -1,6 +1,7 @@
 package com.fiverr.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -25,7 +26,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -35,7 +35,7 @@ import com.fiverr.helper.UserFunctions;
 import com.fiverr.model.Kid;
 import com.fiverr.model.Quote;
 
-public class AllQuote extends Activity{
+public class AllQuote extends Activity implements OnClickListener{
 	final Context context=this;
 	private String tempParentID;
 	private String rate_parent_id,rate_quote_id,rate;
@@ -61,6 +61,8 @@ public class AllQuote extends Activity{
 	
 	private String quote_type;
 	
+	private Button btn_mDateSort;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class AllQuote extends Activity{
 		tempParentID = intent.getStringExtra("test");
 		quote_type = intent.getStringExtra("quote_type");
 		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");		
-		
+		btn_mDateSort = (Button)findViewById(R.id.btn_sort_by_newest);
 		
 		imgloader = new ImageLoader(getApplicationContext());
 		/////----------------------------------
@@ -89,6 +91,8 @@ public class AllQuote extends Activity{
 		}else{
 			Toast.makeText(this.getApplicationContext(),"No Internet connection", Toast.LENGTH_LONG).show();
 		}
+		btn_mDateSort.setOnClickListener(this);
+		
 	}
 	private boolean isOnline()  {
 	    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -379,6 +383,29 @@ public class AllQuote extends Activity{
 					.show();
 		}
 	};
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v == btn_mDateSort){
+		    Collections.reverse(QuoteArray);
+		    if(btn_mDateSort.getText().equals("DESC")){
+		    	btn_mDateSort.setText("ASC");
+		    }else{
+		    	btn_mDateSort.setText("DESC");
+		    }
+		    ViewPager pager = (ViewPager) findViewById(R.id.pager);
+			PostAdapter adapter ;
+			if(quote_type.equals("fav")){
+				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArray,quote_type);
+			}else{
+				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this,QuoteArray,quote_type);
+			}
+			
+			pager.setAdapter(adapter);
+			pager.setCurrentItem(0);
+		}
+	}
 	
 	/*  @Override
     public boolean onTouchEvent(MotionEvent event) {

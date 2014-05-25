@@ -42,8 +42,7 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		if (convertView == null) {
-			convertView = mInflator
-					.inflate(R.layout.list_item_kid_detail, null);
+			convertView = mInflator	.inflate(R.layout.list_item_kid_detail, null);
 		}
 
 		ImageView profile = (ImageView) convertView.findViewById(R.id.kid_icon);
@@ -56,7 +55,13 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 		final Kid kid = kids.get(position);
 		Kidname.setText(kid.getName());
 		KidNickNmae.setText(kid.getNick_Name());
-		Kidage.setText("Age: " + kid.getAge()+"   "+kid.getGender());
+		String kid_sex = "";
+		if(kid.getGender().equals("m")){
+			kid_sex = "Male";
+		}else{
+			kid_sex = "Female";
+		}
+		Kidage.setText("Age: " + kid.getAge()+"   "+kid_sex);
 		int loader = R.drawable.default_photo;
 		//String image_url = "http://api.androidhive.info/images/sample.jpg";
 		if(!kid.getImage().equals("")){

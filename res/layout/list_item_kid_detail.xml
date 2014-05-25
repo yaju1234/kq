@@ -2,8 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="100dp"
-    android:background="#71c1fd"
+    android:background="#68bffd"
     android:gravity="center|left"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     android:orientation="horizontal" >
 
     <com.fiverr.ui.CircleImageView
@@ -11,7 +13,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/no_image"
         app:border_color="#000000"
         app:border_width="1dp" />
 
@@ -65,16 +67,24 @@
 
             <Button
                 android:id="@+id/btnEdit"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
                 android:layout_marginBottom="4dp"
+                android:textColor="#fe8300"
+                android:background="@null"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:drawableLeft="@drawable/edit_kid_icon"
                 android:text="EDIT" />
             <Button
                 android:id="@+id/btnPost"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:textColor="#fe8300"
+                android:background="@null"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:drawableLeft="@drawable/kid_post"
                 android:text="POST" />
 
         </LinearLayout>
