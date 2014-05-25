@@ -3,7 +3,7 @@ package com.fiverr.model;
 public class Quote {
 
 	private int Quote_Id,Parent_ID,Kids_Id,Avg_Rate,Status;
-	private String Quote_Text,Image_Id,Video_Id,child_name,child_age,child_gender;
+	private String Quote_Text,Image_Id,Video_Id,child_name,child_age,child_gender,kid_Image,is_favQuote;;
 	
 	
 	public int getQuote_Id() {
@@ -72,4 +72,17 @@ public class Quote {
 	public void setChild_gender(String child_gender) {
 		this.child_gender = child_gender;
 	}
+	public String getKid_Image() {
+		return kid_Image;
+	}
+	public void setKid_Image(String kid_Image) {
+		this.kid_Image = kid_Image;
+	}
+	public String getIsfavQuote() {
+		return is_favQuote;
+	}
+	public void setIsfavQuote(String is_favquote) {
+		this.is_favQuote = is_favquote;
+	}
+	
 }

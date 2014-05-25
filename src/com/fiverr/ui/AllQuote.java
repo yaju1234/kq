@@ -41,6 +41,7 @@ public class AllQuote extends Activity implements OnClickListener{
 	private String rate_parent_id,rate_quote_id,rate;
 	private int index = -1;
 	private List<Quote> QuoteArray;
+	private List<Quote> QuoteArraySecond;
 	//private ViewFlipper flipper;
 	private Quote quote;
 	private Kid kid;
@@ -61,7 +62,10 @@ public class AllQuote extends Activity implements OnClickListener{
 	
 	private String quote_type;
 	
-	private Button btn_mDateSort;
+	private Button btn_mSortByNewest;
+	private Button btn_mSortByOldest;
+	
+	private int Quote_pos = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -71,7 +75,8 @@ public class AllQuote extends Activity implements OnClickListener{
 		tempParentID = intent.getStringExtra("test");
 		quote_type = intent.getStringExtra("quote_type");
 		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");		
-		btn_mDateSort = (Button)findViewById(R.id.btn_sort_by_newest);
+		btn_mSortByNewest = (Button)findViewById(R.id.btn_sort_by_newest);
+		btn_mSortByOldest = (Button)findViewById(R.id.btn_sort_by_oldest);
 		
 		imgloader = new ImageLoader(getApplicationContext());
 		/////----------------------------------
@@ -83,6 +88,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		
 		
 		QuoteArray = new ArrayList<Quote>();
+		QuoteArraySecond = new ArrayList<Quote>(); 
 		
 		//quote = new Quote();
 		if(isOnline()){
@@ -91,7 +97,8 @@ public class AllQuote extends Activity implements OnClickListener{
 		}else{
 			Toast.makeText(this.getApplicationContext(),"No Internet connection", Toast.LENGTH_LONG).show();
 		}
-		btn_mDateSort.setOnClickListener(this);
+		btn_mSortByNewest.setOnClickListener(this);
+		btn_mSortByOldest.setOnClickListener(this);
 		
 	}
 	private boolean isOnline()  {
@@ -114,7 +121,12 @@ public class AllQuote extends Activity implements OnClickListener{
 		if(quote_type.equals("fav")){
 			jsonObject = userfunction.getFavQuotes(tempParentID);
 		}else if(quote_type.equals("all")){
-			jsonObject =userfunction.getQuotes("0");
+			if(settings.getString("Parent_ID", "0").equals("0")){
+				jsonObject =userfunction.getQuotes("0");
+			}else{
+				jsonObject =userfunction.getQuotes(settings.getString("Parent_ID", "0"));
+			}
+			
 		}else if(quote_type.equals("kid_qoute")){
 			jsonObject =userfunction.getQuotes(tempParentID);
 		}
@@ -136,14 +148,26 @@ public class AllQuote extends Activity implements OnClickListener{
 						
 						quote.setQuote_Text(jObj.getString("text"));
 						quote.setAvg_Rate(jObj.getInt("avg_rate"));
-						quote.setImage_Id(jObj.getString("image"));
-						quote.setVideo_Id(jObj.getString("video"));
+						if(!jObj.isNull("kidImg")){
+							quote.setKid_Image(jObj.getString("kidImg"));
+						}else{
+							quote.setKid_Image("no");
+						}
 						
+						quote.setVideo_Id(jObj.getString("video"));
+						quote.setImage_Id(jObj.getString("image"));
 						quote.setChild_age(jObj.getString("age"));
 						quote.setChild_name(jObj.getString("name"));
 						quote.setChild_gender(jObj.getString("gender"));
+						if(jObj.has("isfavquate")) {
+						    //it has it, do appropriate processing
+							quote.setIsfavQuote(""+jObj.getInt("isfavquate"));
+						}else{
+							quote.setIsfavQuote("0");
+						}
 						
 						QuoteArray.add(quote);
+						QuoteArraySecond.add(quote);
 						
 				}
 				}
@@ -172,6 +196,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			Log.e("Size",""+QuoteArray.size());
+			
 			if(QuoteArray.size()==0){
 				finish();
 			}
@@ -187,6 +212,9 @@ public class AllQuote extends Activity implements OnClickListener{
 				
 				pager.setAdapter(adapter);
 				pager.setCurrentItem(0);
+				
+				//QuoteArraySecond = QuoteArray;
+				Collections.reverse(QuoteArraySecond);
 				/*
 			++index;
 			txtQuote.setText(QuoteArray.get(index).getQuote_Text());
@@ -316,6 +344,10 @@ public class AllQuote extends Activity implements OnClickListener{
 				
 				if(Integer.parseInt(success)==1){
 					Log.d("Fav Quote","Sucess marking fav");
+					QuoteArray.get(Quote_pos).setIsfavQuote("1");
+					//QuoteArraySecond = QuoteArray;
+					Collections.copy(QuoteArraySecond,QuoteArray);
+					Collections.reverse(QuoteArraySecond);
 				}else{
 					Log.d("Fav Quote","Fails marking fav");
 				}
@@ -349,13 +381,14 @@ public class AllQuote extends Activity implements OnClickListener{
 		dialog.show();
 	}
 	
-	public void callMarkAsFav(int quote_Id) {
+	public void callMarkAsFav(int quote_Id, int position) {
 		// TODO Auto-generated method stub
 		settings = getSharedPreferences("MYPREFS", 0);
 		Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
 		if(settings.getString("Parent_ID", "0").equals("0")){
 			dialog_box();
 		}else{
+			Quote_pos=position;
 			new MarkFav().execute(""+quote_Id);
 		}	
 	}
@@ -387,19 +420,27 @@ public class AllQuote extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if(v == btn_mDateSort){
-		    Collections.reverse(QuoteArray);
-		    if(btn_mDateSort.getText().equals("DESC")){
-		    	btn_mDateSort.setText("ASC");
-		    }else{
-		    	btn_mDateSort.setText("DESC");
-		    }
+		if(v == btn_mSortByNewest){		   
+		    
 		    ViewPager pager = (ViewPager) findViewById(R.id.pager);
 			PostAdapter adapter ;
 			if(quote_type.equals("fav")){
 				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArray,quote_type);
 			}else{
 				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this,QuoteArray,quote_type);
+			}
+			
+			pager.setAdapter(adapter);
+			pager.setCurrentItem(0);
+		}
+		if(v == btn_mSortByOldest){		   
+		    
+		    ViewPager pager = (ViewPager) findViewById(R.id.pager);
+			PostAdapter adapter ;
+			if(quote_type.equals("fav")){
+				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArraySecond,quote_type);
+			}else{
+				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this,QuoteArraySecond,quote_type);
 			}
 			
 			pager.setAdapter(adapter);

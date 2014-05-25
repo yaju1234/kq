@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingBottom="8dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:paddingTop="40dp"
-    android:paddingBottom="40dp"
-    android:gravity="center" >
+    android:paddingTop="2dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -25,8 +25,8 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
                 android:layout_marginTop="5dp"
+                android:orientation="horizontal"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" >
 
@@ -81,45 +81,60 @@
                 android:background="@drawable/devider"
                 android:orientation="vertical" >
             </LinearLayout>
- <RelativeLayout
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:orientation="vertical" >
-            
-            <TextView
-                android:id="@+id/avg_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:text="Average Rating: 2.5"
-                android:layout_alignParentLeft="true"
-                android:textColor="#e78158"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                />
-            
-             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:text="3 hr Ago"
-                android:paddingRight="5dp"
-                android:layout_alignParentRight="true"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                />
-</RelativeLayout>
-            <TextView
+
+                <TextView
+                    android:id="@+id/avg_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="5dp"
+                    android:text="Average Rating: 2.5"
+                    android:textColor="#e78158"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="3 hr Ago"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:id="@+id/imageQuote"
+                    android:layout_width="fill_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
                 android:id="@+id/textQuote"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_margin="5dp"
                 android:padding="4dp"
-                android:text="TextView"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+               android:text="TextView"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+            </LinearLayout>
+
+            
         </LinearLayout>
 
         <LinearLayout
@@ -129,7 +144,6 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-   
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

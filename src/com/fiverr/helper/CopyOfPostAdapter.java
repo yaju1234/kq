@@ -32,7 +32,7 @@ public class CopyOfPostAdapter extends ArrayAdapter<Quote> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		if (convertView == null) {
 			convertView = mInflator
@@ -70,7 +70,7 @@ public class CopyOfPostAdapter extends ArrayAdapter<Quote> {
 		btn_fav.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				act.callMarkAsFav(kid.getQuote_Id());
+				act.callMarkAsFav(kid.getQuote_Id(),position);
 			}
 		});
 		

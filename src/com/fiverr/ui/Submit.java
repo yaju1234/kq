@@ -21,8 +21,10 @@ import org.json.JSONObject;
 import com.fiverr.helper.UserFunctions;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -43,12 +45,14 @@ public class Submit extends Activity{
 	final Context context=this;
 	private String image="",video="",avg_rate="0";
 	private int kid_id=0;
-	private Typeface cTypeface;
+	//private Typeface cTypeface;
 	private EditText eQuote;
 	private Button  btnImageUploader,btnVideoUploader,btnSubmit;
 	private String kidsImagePath;
 	
 	public HttpEntity resEntity;
+	
+	public int imgflag = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,22 +61,22 @@ public class Submit extends Activity{
 		setContentView(R.layout.activity_register);
 		Intent getKidIdIntent = getIntent();
 		kid_id = getKidIdIntent.getExtras().getInt("kid_id");
-		cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");
+		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");
 		eQuote =(EditText) findViewById(R.id.editText1);
 		btnImageUploader = (Button) findViewById(R.id.button1);
 		btnVideoUploader = (Button) findViewById(R.id.button2);
 		btnSubmit =(Button) findViewById(R.id.button3);
-		btnImageUploader.setTypeface(cTypeface);
+		//btnImageUploader.setTypeface(cTypeface);
 		//btnImageUploader.setVisibility(View.GONE);
-		btnSubmit.setTypeface(cTypeface);
-		btnVideoUploader.setTypeface(cTypeface);
+		//btnSubmit.setTypeface(cTypeface);
+		//btnVideoUploader.setTypeface(cTypeface);
 		btnVideoUploader.setVisibility(View.GONE);
 		btnSubmit.setOnClickListener( new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				new PostQuote().execute(""+kid_id,eQuote.getText().toString().trim(),kidsImagePath," ","0");
+				new PostQuote().execute(""+kid_id,eQuote.getText().toString().trim(),kidsImagePath,"0");
 			}
 		});
 		
@@ -81,6 +85,51 @@ public class Submit extends Activity{
 			
 			@Override
 			public void onClick(View v) {
+				
+				
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+						context);
+		 
+					// set title
+					alertDialogBuilder.setTitle("Subbmit Post");
+		 
+					// set dialog message
+					alertDialogBuilder
+						.setMessage("Select fle type")
+						.setCancelable(false)
+						.setPositiveButton("Image",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								// if this button is clicked, close
+								// current activity
+								imgflag = 1;
+								Intent intent = new Intent();
+								intent.setType("image/*");
+								intent.setAction(Intent.ACTION_GET_CONTENT);
+								startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+								dialog.cancel();
+							}
+						  })
+						.setNegativeButton("Video",new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,int id) {
+								// if this button is clicked, just close
+								// the dialog box and do nothing
+								imgflag = 2;
+								Intent intent = new Intent();
+								intent.setType("video/*");
+								intent.setAction(Intent.ACTION_GET_CONTENT);
+								startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_IMAGE);
+								dialog.cancel();
+							}
+						});
+		 
+						// create alert dialog
+						AlertDialog alertDialog = alertDialogBuilder.create();
+		 
+						// show it
+						alertDialog.show();
+					}
+				});
+				/*
 				// Intent open gallery
 				
 				try {
@@ -95,9 +144,11 @@ public class Submit extends Activity{
 							Toast.LENGTH_LONG).show();
 				}
 				
-			}
-		});
-	}
+			*/}
+		//});
+
+		
+	//}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -157,16 +208,19 @@ public class Submit extends Activity{
 				Log.e("parent_id", settings.getString("Parent_ID", "0").toString());
 					entity.addPart("tag", new StringBody("inser_Quote"));
 					entity.addPart("parent_id", new StringBody(settings.getString("Parent_ID", "0").toString()));
-				    Log.e("kid_id", param[0]);
 					entity.addPart("kid_id", new StringBody(param[0]));
-					Log.e("quote", param[1]);
 					entity.addPart("quote", new StringBody(param[1]));
-					Log.e("image", param[2]);
-					entity.addPart("file", new FileBody(new File(param[2])));	
-					Log.e("video", param[3]);
-					entity.addPart("video", new StringBody(param[3]));
-					Log.e("avg_rate", param[4]);
-					entity.addPart("avg_rate", new StringBody(param[4]));
+					if(imgflag == 1){
+						entity.addPart("file", new FileBody(new File(param[2])));
+						entity.addPart("flaImg", new StringBody("1"));
+					}
+					
+					if(imgflag == 2){
+						entity.addPart("file", new FileBody(new File(param[2])));
+						entity.addPart("flaImg", new StringBody("2"));
+					}
+						
+					entity.addPart("avg_rate", new StringBody(param[3]));
 					httpPost.setEntity(entity);
 					Log.e("TAG", "Request  "+httpPost.getRequestLine());
 					HttpResponse response;
@@ -204,7 +258,8 @@ public class Submit extends Activity{
 			try {
 				JSONObject json = new JSONObject(result);
 				if(json.getInt("success") ==1){
-					Toast.makeText(Submit.this, "post created successfully", Toast.LENGTH_LONG).show();					
+					Toast.makeText(Submit.this, "post created successfully", Toast.LENGTH_LONG).show();	
+					Submit.this.finish();
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
