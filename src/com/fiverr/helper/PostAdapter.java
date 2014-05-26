@@ -2,21 +2,26 @@ package com.fiverr.helper;
 
 import java.util.List;
 
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fiverr.model.Quote;
 import com.fiverr.ui.AllQuote;
+import com.fiverr.ui.CustomVideoView;
 import com.fiverr.ui.R;
 
 public class PostAdapter extends PagerAdapter {
@@ -45,8 +50,10 @@ public class PostAdapter extends PagerAdapter {
 		ImageView imageQuote = (ImageView)convertView.findViewById(R.id.imageQuote);
 		child_quote.setMovementMethod(new ScrollingMovementMethod());
 		final Button btn_fav =(Button)convertView.findViewById(R.id.btn_fav);
-		Button iv_rate =(Button)convertView.findViewById(R.id.iv_rate);
+		final Button iv_rate =(Button)convertView.findViewById(R.id.iv_rate);
 		Button iv_share = (Button)convertView.findViewById(R.id.iv_share);
+		CustomVideoView vv = (CustomVideoView)convertView.findViewById(R.id.videoQuote);
+		RelativeLayout rl_videoQuote = (RelativeLayout)convertView.findViewById(R.id.rl_videoQuote);
 		
 		if(quote_type.equals("fav")){
 			btn_fav.setVisibility(View.GONE);
@@ -66,13 +73,31 @@ public class PostAdapter extends PagerAdapter {
 		
 		child_quote.setText(kid.getQuote_Text());
 		imgLoader.DisplayImage("http://playgroundhumor.com/demo"+kid.getKid_Image(), child_img);
-		if(kid.getImage_Id()!=" "){
+		if(kid.getImage_Id().length()>3){
 			imageQuote.setVisibility(View.VISIBLE);
+			rl_videoQuote.setVisibility(View.GONE);
 			imgLoader.DisplayImage("http://playgroundhumor.com/demo"+kid.getImage_Id(), imageQuote);
-		}else if(kid.getVideo_Id()!=" "){
+		}else if(kid.getVideo_Id().length()>3){
+			Log.e("ggg", "hhh");
 			imageQuote.setVisibility(View.GONE);
+			rl_videoQuote.setVisibility(View.VISIBLE);
+			vv.setVideoURI(Uri.parse(("http://playgroundhumor.com/demo"+kid.getVideo_Id())));
+            MediaController mc = new MediaController(act);
+            vv.setMediaController(mc);
+            vv.requestFocus();
+            vv.seekTo(1000);
+           // vv.start();         
+            mc.show();
 		}else{
 			imageQuote.setVisibility(View.GONE);
+			rl_videoQuote.setVisibility(View.GONE);
+		}
+		
+		
+		if(kid.getIsRate().equals("0")){
+			iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.rate_quote, 0, 0);
+		}else{
+			iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_rate, 0, 0);
 		}
 		
 		if(!kid.getIsfavQuote().equals("0")){
@@ -99,7 +124,14 @@ public class PostAdapter extends PagerAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				act.callRate(kid.getQuote_Id());
+				if(kid.getIsRate().equals("0")){
+					iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_rate, 0, 0);
+					act.callRate(kid.getQuote_Id(),position);
+				}else{
+					Toast.makeText(act, "You already rate it...", Toast.LENGTH_SHORT)
+					.show();
+				}
+				
 			}
 		});
 		((ViewPager) view).addView(convertView, 0);

@@ -29,6 +29,8 @@ import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.fiverr.db.KqDatabaseAdapter;
+import com.fiverr.helper.Constant;
 import com.fiverr.helper.ImageLoader;
 import com.fiverr.helper.PostAdapter;
 import com.fiverr.helper.UserFunctions;
@@ -46,6 +48,7 @@ public class AllQuote extends Activity implements OnClickListener{
 	private Quote quote;
 	private Kid kid;
 	//private Typeface cTypeface;
+	private KqDatabaseAdapter kqDbAdapter;
 	
 	float initialX;
 	private SharedPreferences settings ;
@@ -80,7 +83,10 @@ public class AllQuote extends Activity implements OnClickListener{
 		
 		imgloader = new ImageLoader(getApplicationContext());
 		/////----------------------------------
-		
+		kqDbAdapter = KqDatabaseAdapter.createInstance(getApplicationContext());
+		if(kqDbAdapter.fetChValue()!=null){
+			Constant.kqArrRating = kqDbAdapter.fetChValue();
+		}
 		//btnRate.setTypeface(cTypeface);
 		//txtName.setTypeface(cTypeface);
 		//txtQuote.setTypeface(cTypeface);
@@ -140,7 +146,8 @@ public class AllQuote extends Activity implements OnClickListener{
 				}else{
 					jArray = jsonObject.getJSONArray("data");
 					for(int i=0;i<jArray.length();i++){
-						JSONObject jObj =jArray.getJSONObject(i);
+						JSONObject jObj =jArray.getJSONObject(i);						
+						boolean flag = true;
 						quote =new Quote();
 						quote.setQuote_Id(jObj.getInt("id"));
 						quote.setParent_ID(jObj.getInt("parent_id"));
@@ -166,6 +173,17 @@ public class AllQuote extends Activity implements OnClickListener{
 							quote.setIsfavQuote("0");
 						}
 						
+						for(int j=0;j<Constant.kqArrRating.size();j++){							
+							if(Constant.kqArrRating.get(j).equals(""+jObj.getInt("id"))){
+								flag = false;
+								j = Constant.kqArrRating.size();								
+							}
+						}
+						if(flag){
+							quote.setIsRated("0");
+						}else{
+							quote.setIsRated("1");
+						}
 						QuoteArray.add(quote);
 						QuoteArraySecond.add(quote);
 						
@@ -313,8 +331,12 @@ public class AllQuote extends Activity implements OnClickListener{
 				String res = jOBJ.getString("success");
 				if(Integer.parseInt(res)== 0)
 					return false;
-				if(Integer.parseInt(res)==1)
+				if(Integer.parseInt(res)==1){
+					kqDbAdapter.inserValue(rate_quote_id);
+					Constant.kqArrRating.add(rate_quote_id);
 					return true;
+				}
+					
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -329,6 +351,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
+			QuoteArray.get(Quote_pos).setIsRated("1");
 		}
 	}
 	
@@ -358,8 +381,9 @@ public class AllQuote extends Activity implements OnClickListener{
 		}		
 	}
 	
-	public void callRate(final int quote_id) {
+	public void callRate(final int quote_id, int position) {
 		// TODO Auto-generated method stub
+		Quote_pos=position;
 		final Dialog dialog = new Dialog(context);
 		dialog.setContentView(R.layout.custom_dialog);
 		dialog.setTitle("Rate this Quote");

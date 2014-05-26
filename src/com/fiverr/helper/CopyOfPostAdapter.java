@@ -79,7 +79,7 @@ public class CopyOfPostAdapter extends ArrayAdapter<Quote> {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				act.callRate(kid.getQuote_Id());
+				act.callRate(kid.getQuote_Id(),position);
 			}
 		});
 		
