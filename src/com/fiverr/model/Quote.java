@@ -2,9 +2,9 @@ package com.fiverr.model;
 
 public class Quote {
 
-	private int Quote_Id,Parent_ID,Kids_Id,Avg_Rate,Status;
+	private int Quote_Id,Parent_ID,Kids_Id,Status;
 	private String Quote_Text,Image_Id,Video_Id,child_name,child_age,child_gender,kid_Image,is_favQuote,is_rated;;
-	
+	private double Avg_Rate;
 	
 	public int getQuote_Id() {
 		return Quote_Id;
@@ -24,10 +24,10 @@ public class Quote {
 	public void setKids_Id(int kids_Id) {
 		Kids_Id = kids_Id;
 	}
-	public int getAvg_Rate() {
+	public double getAvg_Rate() {
 		return Avg_Rate;
 	}
-	public void setAvg_Rate(int avg_Rate) {
+	public void setAvg_Rate(double avg_Rate) {
 		Avg_Rate = avg_Rate;
 	}
 	public int getStatus() {

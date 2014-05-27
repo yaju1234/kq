@@ -38,7 +38,7 @@ public class CopyOfPostAdapter extends ArrayAdapter<Quote> {
 			convertView = mInflator
 					.inflate(R.layout.each_activity_quote, null);
 		}
-		TextView avg_rating=(TextView)convertView.findViewById(R.id.avg_rating);
+		final TextView avg_rating=(TextView)convertView.findViewById(R.id.avg_rating);
 		TextView child_name=(TextView)convertView.findViewById(R.id.textName);
 		TextView child_age=(TextView)convertView.findViewById(R.id.textAge);
 		TextView child_gender=(TextView)convertView.findViewById(R.id.textGender);
@@ -79,7 +79,7 @@ public class CopyOfPostAdapter extends ArrayAdapter<Quote> {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				act.callRate(kid.getQuote_Id(),position);
+				act.callRate(kid.getQuote_Id(),position,avg_rating);
 			}
 		});
 		

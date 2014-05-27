@@ -41,7 +41,7 @@ public class PostAdapter extends PagerAdapter {
 	@Override
 	public Object instantiateItem(ViewGroup view, final int position){
 		View convertView = inflater.inflate(R.layout.each_activity_quote, view, false);
-		TextView avg_rating=(TextView)convertView.findViewById(R.id.avg_rating);
+		final TextView avg_rating=(TextView)convertView.findViewById(R.id.avg_rating);
 		TextView child_name=(TextView)convertView.findViewById(R.id.textName);
 		TextView child_age=(TextView)convertView.findViewById(R.id.textAge);
 		TextView child_gender=(TextView)convertView.findViewById(R.id.textGender);
@@ -126,7 +126,7 @@ public class PostAdapter extends PagerAdapter {
 			public void onClick(View v) {
 				if(kid.getIsRate().equals("0")){
 					iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_rate, 0, 0);
-					act.callRate(kid.getQuote_Id(),position);
+					act.callRate(kid.getQuote_Id(),position,avg_rating);
 				}else{
 					Toast.makeText(act, "You already rate it...", Toast.LENGTH_SHORT)
 					.show();

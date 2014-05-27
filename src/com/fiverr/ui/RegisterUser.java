@@ -1,5 +1,7 @@
 package com.fiverr.ui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.json.JSONObject;
@@ -18,6 +20,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -39,6 +44,9 @@ public class RegisterUser extends Activity {
     private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    List<String> list = new ArrayList<String>();
+    int pos;
+    //int pos =0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -61,7 +69,35 @@ public class RegisterUser extends Activity {
 		phone.setTypeface(cTypeface);*/
 		//Submit.setTypeface(cTypeface);
 		
+		String[] regionsArray = getResources().getStringArray(R.array.country_arrays);
+		for(int i=0; i<regionsArray.length; i++){
+			list.add(regionsArray[i]);
+			if(regionsArray[i].equalsIgnoreCase("United States")){
+				pos = i;
+			}
+		}
 		
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(RegisterUser.this, android.R.layout.simple_spinner_item,list);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		country.setAdapter(dataAdapter);
+		country.setSelection(pos);
+		Country = list.get(pos);
+		
+		country.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				
+				Country = list.get(arg2);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				
+				
+			}
+		});
 		Submit.setOnClickListener( new OnClickListener() {
 			
 			@Override
@@ -92,7 +128,8 @@ public class RegisterUser extends Activity {
 					e.printStackTrace();
 				}
 				*/
-				Country = String.valueOf(country.getSelectedItem());
+				//Country = String.valueOf(country.getSelectedItem());
+				
 				
 				if(isOnline()){
 					if(registrationValidation(username.getText().toString().trim(),password.getText().toString().trim(),email.getText().toString().trim(),
@@ -206,6 +243,7 @@ class CreateUser extends AsyncTask<String, String, String>{
 	@Override
 	protected String doInBackground(String... arg0) {
 		// TODO Auto-generated method stub
+		try{
 		Log.d("TEST", Gender +" "+Country);
 		String name =username.getText().toString().trim();
 		String pemail = email.getText().toString().trim();
@@ -218,7 +256,7 @@ class CreateUser extends AsyncTask<String, String, String>{
 		JSONObject json= userfunction.registerUser(name, pemail, ppassword, pphone,Gender, pcountry, pstate,pcity);
 		
 		// check for register response
-		try{
+		if(json!=null){
 			if(json.getString(KEY_SUCCESS)!=null){
 				Log.d("JSON", json.toString());
 				String res = json.getString(KEY_SUCCESS);
@@ -228,10 +266,14 @@ class CreateUser extends AsyncTask<String, String, String>{
 					finish();
 				}
 				else{
-					Toast.makeText(mcontext, "Error in submitting Data", Toast.LENGTH_LONG).show();
+					//Toast.makeText(mcontext, "Error in submitting Data", Toast.LENGTH_LONG).show();
 				}
 					
-			}
+			}	
+		}else{
+			//Toast.makeText(mcontext, "Error in submitting Data", Toast.LENGTH_LONG).show();
+		}
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -116,7 +116,7 @@ public class EditKidProfile extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				//new UpdateKidProfile().execute();
+				new UpdateKidProfile().execute();
 				
 			}
 		});

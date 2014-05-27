@@ -59,8 +59,15 @@ public class UserFunctions {
 		
 		//getting JSON Object
 		JSONObject json = jsonParser.getJSONFromUrl(APIUrl, params);
-		Log.e("RESPONSE ", json.toString());
-		return json;		
+		if(json!=null){
+			Log.e("RESPONSE ", json.toString());
+			return json;
+		}else{
+			return null;
+		}
+		
+		
+				
 	}
 	
 	/**

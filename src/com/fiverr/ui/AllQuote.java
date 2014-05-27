@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fiverr.db.KqDatabaseAdapter;
@@ -70,6 +71,9 @@ public class AllQuote extends Activity implements OnClickListener{
 	
 	private int Quote_pos = 0;
 	
+	private double avg_rate;
+	
+	private TextView tv_mAvgRating;
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -334,6 +338,7 @@ public class AllQuote extends Activity implements OnClickListener{
 				if(Integer.parseInt(res)==1){
 					kqDbAdapter.inserValue(rate_quote_id);
 					Constant.kqArrRating.add(rate_quote_id);
+					avg_rate=jOBJ.getDouble("data");
 					return true;
 				}
 					
@@ -352,6 +357,8 @@ public class AllQuote extends Activity implements OnClickListener{
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			QuoteArray.get(Quote_pos).setIsRated("1");
+			QuoteArray.get(Quote_pos).setAvg_Rate(avg_rate);
+			tv_mAvgRating.setText("Average Rating :"+String.valueOf(avg_rate));
 		}
 	}
 	
@@ -381,8 +388,9 @@ public class AllQuote extends Activity implements OnClickListener{
 		}		
 	}
 	
-	public void callRate(final int quote_id, int position) {
+	public void callRate(final int quote_id, int position, TextView avg_rating) {
 		// TODO Auto-generated method stub
+		tv_mAvgRating=avg_rating;
 		Quote_pos=position;
 		final Dialog dialog = new Dialog(context);
 		dialog.setContentView(R.layout.custom_dialog);

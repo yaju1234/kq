@@ -265,8 +265,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="2dp"
-            android:entries="@array/country_arrays"
-            android:prompt="@string/country_prompt" />
+           android:prompt="@string/country_prompt"
+            />
 
               <LinearLayout
         android:id="@+id/editText1"
