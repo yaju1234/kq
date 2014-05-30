@@ -17,10 +17,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -166,6 +170,11 @@ public class AllQuote extends Activity implements OnClickListener{
 						}
 						
 						quote.setVideo_Id(jObj.getString("video"));
+						if(jObj.getString("video").length()>3){
+							quote.setThunails(ThumbnailUtils.createVideoThumbnail( "http://playgroundhumor.com/demo"+jObj.getString("video"), MediaStore.Video.Thumbnails.MINI_KIND ));
+						}else{
+							quote.setThunails(null);
+						}
 						quote.setImage_Id(jObj.getString("image"));
 						quote.setChild_age(jObj.getString("age"));
 						quote.setChild_name(jObj.getString("name"));
@@ -478,6 +487,32 @@ public class AllQuote extends Activity implements OnClickListener{
 			pager.setAdapter(adapter);
 			pager.setCurrentItem(0);
 		}
+	}
+	public void callShare(String quote_text, String image, String video) {
+		// TODO Auto-generated method stub
+		/*Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, quote_text);
+        if(!image.equals("")){
+        	 shareIntent.setType("image/jpeg");
+             shareIntent.putExtra(Intent.EXTRA_STREAM, image);	
+        }
+       
+        
+
+        startActivity(Intent.createChooser(shareIntent, "Share"));*/
+        Log.e("image",image);
+        
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("image/jpeg"); 
+        shareIntent.putExtra(Intent.EXTRA_TEXT,quote_text+"\n **************** \n Quote Shared by PlayGround Humor APP");
+       // shareIntent.setType("text/plain");
+        
+		if(!image.equals("")){	
+			 shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(image));        	             	
+        }		 
+		startActivity(Intent.createChooser(shareIntent, "Share Quote Via"));
 	}
 	
 	/*  @Override

@@ -1,10 +1,13 @@
 package com.fiverr.model;
 
+import android.graphics.Bitmap;
+
 public class Quote {
 
 	private int Quote_Id,Parent_ID,Kids_Id,Status;
 	private String Quote_Text,Image_Id,Video_Id,child_name,child_age,child_gender,kid_Image,is_favQuote,is_rated;;
 	private double Avg_Rate;
+	private Bitmap thunails;
 	
 	public int getQuote_Id() {
 		return Quote_Id;
@@ -90,4 +93,11 @@ public class Quote {
 	public void setIsRated(String isRated) {
 		this.is_rated = isRated;
 	}
+	public Bitmap getThunails() {
+		return thunails;
+	}
+	public void setThunails(Bitmap thunails) {
+		this.thunails = thunails;
+	}
+	
 }

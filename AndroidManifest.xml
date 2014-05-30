@@ -28,7 +28,18 @@
         <activity android:name="com.fiverr.ui.Quotes" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.AllQuote" 
-            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+                <intent-filter>
+		        <action android:name="android.intent.action.SEND" />
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <data android:mimeType="image/*" />
+		    </intent-filter>
+		    <intent-filter>
+		        <action android:name="android.intent.action.SEND" />
+		        <category android:name="android.intent.category.DEFAULT" />
+		        <data android:mimeType="text/plain" />
+		    </intent-filter>		          
+        </activity>
         <activity android:name="com.fiverr.ui.RegisterUser" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.Login" 
@@ -40,6 +51,8 @@
         <activity android:name="com.fiverr.ui.FavQuotes" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.EditKidProfile" 
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+        <activity android:name="com.fiverr.ui.VideoPlayView" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
     </application>
 

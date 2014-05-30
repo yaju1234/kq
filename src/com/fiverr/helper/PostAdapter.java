@@ -2,8 +2,14 @@ package com.fiverr.helper;
 
 import java.util.List;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
@@ -15,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +30,7 @@ import com.fiverr.model.Quote;
 import com.fiverr.ui.AllQuote;
 import com.fiverr.ui.CustomVideoView;
 import com.fiverr.ui.R;
+import com.fiverr.ui.VideoPlayView;
 
 public class PostAdapter extends PagerAdapter {
 	private List<Quote> kids;
@@ -52,8 +60,11 @@ public class PostAdapter extends PagerAdapter {
 		final Button btn_fav =(Button)convertView.findViewById(R.id.btn_fav);
 		final Button iv_rate =(Button)convertView.findViewById(R.id.iv_rate);
 		Button iv_share = (Button)convertView.findViewById(R.id.iv_share);
-		CustomVideoView vv = (CustomVideoView)convertView.findViewById(R.id.videoQuote);
+		final ImageView vv_preview = (ImageView)convertView.findViewById(R.id.videoPreview);
+		final CustomVideoView vv = (CustomVideoView)convertView.findViewById(R.id.videoQuote);
 		RelativeLayout rl_videoQuote = (RelativeLayout)convertView.findViewById(R.id.rl_videoQuote);
+		ImageView iv_play = (ImageView)convertView.findViewById(R.id.iv_play);
+		final ProgressBar bar = (ProgressBar)convertView.findViewById(R.id.progressBar1);
 		
 		if(quote_type.equals("fav")){
 			btn_fav.setVisibility(View.GONE);
@@ -81,13 +92,17 @@ public class PostAdapter extends PagerAdapter {
 			Log.e("ggg", "hhh");
 			imageQuote.setVisibility(View.GONE);
 			rl_videoQuote.setVisibility(View.VISIBLE);
-			vv.setVideoURI(Uri.parse(("http://playgroundhumor.com/demo"+kid.getVideo_Id())));
-            MediaController mc = new MediaController(act);
+			
+			//final Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail( "http://playgroundhumor.com/demo"+kid.getVideo_Id(), MediaStore.Video.Thumbnails.MINI_KIND );
+			vv_preview.setImageBitmap(kid.getThunails());
+			/*vv.setVideoURI(Uri.parse(("http://playgroundhumor.com/demo"+kid.getVideo_Id())));
+			MediaController mc = new MediaController(act);
+            
             vv.setMediaController(mc);
             vv.requestFocus();
             vv.seekTo(1000);
            // vv.start();         
-            mc.show();
+            mc.show();*/
 		}else{
 			imageQuote.setVisibility(View.GONE);
 			rl_videoQuote.setVisibility(View.GONE);
@@ -120,6 +135,38 @@ public class PostAdapter extends PagerAdapter {
 			}
 		});
 		
+		iv_play.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				/*vv.setVideoURI(Uri.parse(("http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id())));
+	            MediaController mc = new MediaController(act);
+	            vv.setMediaController(mc);
+	            vv.requestFocus();
+	            vv.seekTo(1000);
+				bar.setVisibility(View.VISIBLE);
+	           vv.start(); */ 
+				Intent i = new Intent(act,VideoPlayView.class);
+				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.putExtra("url", "http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id());
+				act.startActivity(i);
+				
+			}
+		});
+		/*vv.setOnPreparedListener(new OnPreparedListener() {
+			
+			@Override
+			public void onPrepared(MediaPlayer mp) {
+				bar.setVisibility(View.GONE);
+				vv.setVideoURI(Uri.parse(("http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id())));
+	            MediaController mc = new MediaController(act);
+	            vv.setMediaController(mc);
+	            vv.requestFocus();
+	            vv.seekTo(1000);
+	            mc.show();
+				
+			}
+		});*/
 		iv_rate.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -132,6 +179,14 @@ public class PostAdapter extends PagerAdapter {
 					.show();
 				}
 				
+			}
+		});
+		iv_share.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				act.callShare(kid.getQuote_Text(),"http://playgroundhumor.com/demo"+kid.getImage_Id(),"http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id());
 			}
 		});
 		((ViewPager) view).addView(convertView, 0);
