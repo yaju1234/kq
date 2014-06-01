@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/bgni" >
@@ -9,34 +10,61 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Posts"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            />
+
         <EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
-            android:layout_height="278dp"
+            android:layout_height="178dp"
             android:layout_margin="10dp"
             android:ems="10"
             android:padding="5dp"
             android:gravity="top|left"
+            android:background="#80c7fc"
+            android:hint="Enter Posts"
+            android:textColor="#000000"
             android:inputType="textMultiLine" >
            
         </EditText>
-
-        <Button
+ <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            >
+            <com.fiverr.ui.CustomVideoView
+                        android:id="@+id/videoQuote"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="#fff"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true" />
+            <com.fiverr.ui.CircleImageView
+                    android:id="@+id/imgKid"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/no_image"
+        			app:border_color="#000000"
+        			android:layout_marginRight="15dp"
+        			app:border_width="1dp" />
+       <!--  <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            style="@style/CustomStyleButton"
-            android:text="Choose Image File" />
+            android:layout_height="fill_parent"
+            android:text="Choose Image File" /> -->
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            style="@style/CustomStyleButton"
-            android:text="Choose Video File" />
-
+     </RelativeLayout>
         <Button
             android:id="@+id/button3"
             android:layout_width="match_parent"

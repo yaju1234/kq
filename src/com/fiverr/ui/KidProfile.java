@@ -27,6 +27,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -56,7 +58,7 @@ public class KidProfile extends Activity {
 	private String profileImagePath;
 	ProgressDialog pDialog;
 	public HttpEntity resEntity;
-
+private ImageView imgKid;
 	// private RadioGroup radioGropup;
 	// private RadioButton mRadioBtn,fRadioBtn;
 
@@ -73,6 +75,7 @@ public class KidProfile extends Activity {
 		About = (EditText) findViewById(R.id.editText4);
 		// radioGropup = (RadioGroup) findViewById(R.id.radioGroup1);
 		btnUploadImage = (Button) findViewById(R.id.button1);
+		imgKid = (ImageView)findViewById(R.id.imgKid);;
 		
 		//btnUploadImage.setTypeface(cTypeFace);
 		//-------------------------Setting Visibility----------------------------//
@@ -144,6 +147,14 @@ public class KidProfile extends Activity {
 					//Media Gallery
 					Log.d("Selected ImagePath",""+getPath(selectedImageUri));
 						profileImagePath =getPath(selectedImageUri);
+						
+						File imgFile = new  File(profileImagePath);
+						if(imgFile.exists()){
+						    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+						    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
+						    imgKid.setImageBitmap(myBitmap);
+
+						}
 					}
 				catch(Exception e){
 					

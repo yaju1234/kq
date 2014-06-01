@@ -28,6 +28,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,6 +40,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
 
 public class Submit extends Activity{
@@ -51,21 +55,24 @@ public class Submit extends Activity{
 	private String kidsImagePath;
 	
 	public HttpEntity resEntity;
+	private CustomVideoView customVideoView;
+	private ImageView imgKid;
 	
 	public int imgflag = 0;
+	public boolean flag = false; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		Intent getKidIdIntent = getIntent();
 		kid_id = getKidIdIntent.getExtras().getInt("kid_id");
-		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");
 		eQuote =(EditText) findViewById(R.id.editText1);
 		btnImageUploader = (Button) findViewById(R.id.button1);
 		btnVideoUploader = (Button) findViewById(R.id.button2);
 		btnSubmit =(Button) findViewById(R.id.button3);
+		customVideoView = (CustomVideoView)findViewById(R.id.videoQuote);
+		imgKid = (ImageView)findViewById(R.id.imgKid);
 		//btnImageUploader.setTypeface(cTypeface);
 		//btnImageUploader.setVisibility(View.GONE);
 		//btnSubmit.setTypeface(cTypeface);
@@ -166,6 +173,26 @@ public class Submit extends Activity{
 					//Media Gallery
 					Log.d("Selected ImagePath",""+getPath(selectedImageUri));
 						kidsImagePath =getPath(selectedImageUri);
+						File imgFile = new  File(kidsImagePath);
+						if(imgflag == 1){
+							customVideoView.setVisibility(View.GONE);
+							imgKid.setVisibility(View.VISIBLE);
+							if(imgFile.exists()){
+							    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+							    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
+							    imgKid.setImageBitmap(myBitmap);
+
+							}
+						}else{
+							customVideoView.setVisibility(View.VISIBLE);
+							imgKid.setVisibility(View.GONE);
+							customVideoView.setVideoURI(Uri.parse((kidsImagePath)));
+					        MediaController mc = new MediaController(Submit.this);
+					        customVideoView.setMediaController(mc);
+					        customVideoView.requestFocus();
+					        mc.show();
+					        customVideoView.seekTo(100);
+						}
 					}
 				catch(Exception e){
 					
@@ -258,7 +285,7 @@ public class Submit extends Activity{
 			try {
 				JSONObject json = new JSONObject(result);
 				if(json.getInt("success") ==1){
-					Toast.makeText(Submit.this, "post created successfully", Toast.LENGTH_LONG).show();	
+					Toast.makeText(Submit.this, "successfully upload ..waiting for admin approval", Toast.LENGTH_LONG).show();	
 					Submit.this.finish();
 				}
 			} catch (JSONException e) {

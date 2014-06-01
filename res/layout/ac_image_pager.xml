@@ -6,12 +6,11 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/quote_heading"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Browse Posts"
         android:textColor="#fe8300"
         android:textSize="20sp"
         android:textStyle="bold" />

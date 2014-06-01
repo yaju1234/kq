@@ -81,6 +81,9 @@ public class UserFunctions {
 		params.add(new BasicNameValuePair("tag", login_tag));
 		params.add(new BasicNameValuePair("email", email));
 		params.add(new BasicNameValuePair("password", password));
+		Log.e("login_tag", login_tag);
+		Log.e("email", email);
+		Log.e("password", password);
 		
 		//getting JSON Object
 		JSONObject json = jsonParser.getJSONFromUrl(APIUrl, params);
@@ -108,6 +111,7 @@ public class UserFunctions {
 				params.add(new BasicNameValuePair("tag", quote_tag));
 				params.add(new BasicNameValuePair("parent_id", ParentID));
 		//getting JSON Object
+				Log.e("parent id", ParentID);
 		JSONObject jsonObject = jsonParser.getJSONFromUrl(APIUrl, params);
 		return jsonObject;
 	}

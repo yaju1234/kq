@@ -2,6 +2,7 @@ package com.fiverr.helper;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -29,6 +30,7 @@ import android.widget.Toast;
 import com.fiverr.model.Quote;
 import com.fiverr.ui.AllQuote;
 import com.fiverr.ui.CustomVideoView;
+import com.fiverr.ui.ImageDetailScreen;
 import com.fiverr.ui.R;
 import com.fiverr.ui.VideoPlayView;
 
@@ -132,6 +134,16 @@ public class PostAdapter extends PagerAdapter {
 					.show();
 				}
 				
+			}
+		});
+		
+		imageQuote.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(act,ImageDetailScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				i.putExtra("url", "http://playgroundhumor.com/demo"+kid.getImage_Id());
+				act.startActivity(i);
 			}
 		});
 		

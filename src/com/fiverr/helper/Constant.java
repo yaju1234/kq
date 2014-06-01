@@ -6,5 +6,5 @@ public class Constant {
 
 	public static String imagr_url = "http://playgroundhumor.com/demo";
 	public static ArrayList<String> kqArrRating = new ArrayList<String>();
-	
+	public static boolean mEditKidFlag = false ;
 }

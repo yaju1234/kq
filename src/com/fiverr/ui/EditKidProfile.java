@@ -19,10 +19,12 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fiverr.helper.Constant;
 import com.fiverr.helper.ImageLoader;
 import com.fiverr.helper.UserFunctions;
 import com.fiverr.model.Kid;
@@ -35,6 +37,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -68,6 +72,7 @@ public class EditKidProfile extends Activity {
 	ProgressDialog pDialog;
 	private ImageLoader imgLoader;
 	public HttpEntity resEntity;
+	private String is_image_change = "N";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +93,10 @@ public class EditKidProfile extends Activity {
 		btnUploadImage.setTypeface(cTypeFace);
 		//btnUploadImage.setVisibility(View.GONE);
 		imgLoader = new ImageLoader(getApplicationContext());
+		
+		
+		new getKidProfileData().execute();
+		
 		btnUploadImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -126,7 +135,7 @@ public class EditKidProfile extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		new getKidProfileData().execute();
+		
 	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -145,6 +154,13 @@ public class EditKidProfile extends Activity {
 					// Media Gallery
 					Log.d("Selected ImagePath", "" + getPath(selectedImageUri));
 					profileImagePath = getPath(selectedImageUri);
+					File imgFile = new  File(profileImagePath);
+					if(imgFile.exists()){
+					    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
+					    iv_profile_pic.setImageBitmap(myBitmap);
+					    is_image_change = "Y";
+					}
 				} catch (Exception e) {
 
 				}
@@ -388,17 +404,23 @@ public class EditKidProfile extends Activity {
 						Log.e("sex", Sex);
 						entity.addPart("sex", new StringBody(Sex));
 						Log.e("age", Age.getText().toString());
-						entity.addPart("avg_rate", new StringBody(Age.getText().toString()));
+						entity.addPart("age", new StringBody(Age.getText().toString()));
 						Log.e("about", About.getText().toString());
 						entity.addPart("about", new StringBody(About.getText().toString()));
-						Log.e("image", profileImagePath);
-						entity.addPart("image", new FileBody(new File(profileImagePath)));
+						if(is_image_change.equals("Y")){
+							Log.e("image", profileImagePath);
+							entity.addPart("image", new FileBody(new File(profileImagePath)));
+						}
+						
 						httpPost.setEntity(entity);
 						Log.e("TAG", "Request  "+httpPost.getRequestLine());
 						
 						HttpResponse response;
 						response = httpClient.execute(httpPost);
 						resEntity = response.getEntity();
+						final String response_str = EntityUtils.toString(resEntity);
+			            Log.e("TAG","Response "+ response_str);
+						return response_str;
 				//uploadFile(profileImagePath);
 
 				//check for response
@@ -435,8 +457,9 @@ public class EditKidProfile extends Activity {
 						} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return null;
 				}
-				return null;
+				
 			}
 
 			@Override
@@ -459,7 +482,9 @@ public class EditKidProfile extends Activity {
 				try {
 					JSONObject json = new JSONObject(result);
 					if(json.getInt("success") ==1){
-						Toast.makeText(EditKidProfile.this, "Profile Edited successfully", Toast.LENGTH_LONG).show();					
+						Toast.makeText(EditKidProfile.this, "Profile Edited successfully", Toast.LENGTH_LONG).show();
+						finish();
+						Constant.mEditKidFlag = true ;
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

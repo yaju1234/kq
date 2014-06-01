@@ -254,18 +254,19 @@ class CreateUser extends AsyncTask<String, String, String>{
 		String pcity = city.getText().toString().trim();
 		UserFunctions userfunction = new UserFunctions();
 		JSONObject json= userfunction.registerUser(name, pemail, ppassword, pphone,Gender, pcountry, pstate,pcity);
-		
+		String res = null ;
 		// check for register response
 		if(json!=null){
 			if(json.getString(KEY_SUCCESS)!=null){
 				Log.d("JSON", json.toString());
-				String res = json.getString(KEY_SUCCESS);
+				res = json.getString(KEY_SUCCESS);
 				if(Integer.parseInt(res)==1){
 					if(pDialog.isShowing())
 						pDialog.dismiss();
 					finish();
 				}
 				else{
+					res = json.getString("message");
 					//Toast.makeText(mcontext, "Error in submitting Data", Toast.LENGTH_LONG).show();
 				}
 					
@@ -273,11 +274,12 @@ class CreateUser extends AsyncTask<String, String, String>{
 		}else{
 			//Toast.makeText(mcontext, "Error in submitting Data", Toast.LENGTH_LONG).show();
 		}
-			
+		return res;	
 		}catch(Exception e){
 			e.printStackTrace();
+			return null;	
 		}
-		return null;
+		
 	}
 	
 	@Override
@@ -285,6 +287,11 @@ class CreateUser extends AsyncTask<String, String, String>{
 		// TODO Auto-generated method stub
 		super.onPostExecute(result);
 		pDialog.dismiss();
+		if(Integer.parseInt(result)==1){
+			Toast.makeText(mcontext, "Thank you for your registration. A activation mail will be sent", Toast.LENGTH_LONG).show();
+		}else{
+			Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+		}
 	}
 
 }

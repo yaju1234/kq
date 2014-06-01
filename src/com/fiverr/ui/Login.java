@@ -1,5 +1,6 @@
 package com.fiverr.ui;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fiverr.ui.R;
@@ -110,7 +111,7 @@ public class Login extends Activity {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			UserFunctions userfunction = new UserFunctions();
-			JSONObject json=userfunction.checkUser(email.getText().toString().trim(), password.getText().toString().trim());
+			final JSONObject json=userfunction.checkUser(email.getText().toString().trim(), password.getText().toString().trim());
 			
 			// check for login response
 			try{
@@ -127,6 +128,15 @@ public class Login extends Activity {
 						
 						runOnUiThread(new Runnable() {
 							public void run() {
+								
+								try {
+									Toast.makeText(getApplicationContext(), json.getString("message"), Toast.LENGTH_SHORT).show();
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+								/*
 								//
 								
 								AlertDialog.Builder builder1 = new AlertDialog.Builder(mContext);
@@ -150,7 +160,7 @@ public class Login extends Activity {
 
 					            AlertDialog alert11 = builder1.create();
 					            alert11.show();
-							}
+							*/}
 						});
 						
 						

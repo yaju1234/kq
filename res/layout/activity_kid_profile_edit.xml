@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bgni" >
@@ -28,36 +29,47 @@
             android:layout_margin="10dp"
             android:hint="Nick Name"
             android:ems="10" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup1"
-            android:layout_width="wrap_content"
+		<LinearLayout 
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal"
-            >
-
-            <RadioButton
-                android:id="@+id/radio0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:layout_margin="10dp"
-                android:onClick="onRadioButtonClicked"
-                android:text="Male" />
-
-            <RadioButton
-                android:id="@+id/radio1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onRadioButtonClicked"
-                android:text="Female" />
-
-            
-        </RadioGroup>
-
+            android:gravity="center"
+            android:orientation="horizontal">
+            		<com.fiverr.ui.CircleImageView
+	                    android:id="@+id/iv_profile_pic"
+	                    android:layout_width="80dp"
+	                    android:layout_height="80dp"
+	                    android:src="@drawable/no_image"
+	        			app:border_color="#000000"
+	        			android:layout_marginRight="15dp"
+	        			app:border_width="1dp" />
+            <RadioGroup
+	            android:id="@+id/radioGroup1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"            
+	            android:layout_gravity="center_horizontal"
+	            >
+	
+	            <RadioButton
+	                android:id="@+id/radio0"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:checked="true"
+	                android:layout_margin="10dp"
+	                android:onClick="onRadioButtonClicked"
+	                android:text="Male" />
+	
+	            <RadioButton
+	                android:id="@+id/radio1"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_margin="10dp"
+	                android:onClick="onRadioButtonClicked"
+	                android:text="Female" />
+	
+	            
+	        </RadioGroup>
+		</LinearLayout>
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
@@ -79,7 +91,7 @@
 		 android:layout_width="match_parent"
          android:layout_height="50dp"   
 		 android:orientation="horizontal"   >
-            <LinearLayout 
+            <!-- <LinearLayout 
 		 	 android:layout_width="match_parent"
         	 android:layout_height="50dp"  
         	 android:layout_weight="1" 
@@ -88,16 +100,16 @@
 		 	 android:layout_width="wrap_content"
          	 android:layout_height="wrap_content"     
 		 	 android:id="@+id/iv_profile_pic"   />
-		 	</LinearLayout>
+		 	</LinearLayout> -->
 		 	<LinearLayout 
 		 	 android:layout_width="match_parent"
-        	 android:layout_height="50dp"   
-        	  android:layout_weight=".5" 
+        	 android:layout_height="fill_parent"          	  
 		 	 android:gravity="right"   >
 		 	 <Button
             android:id="@+id/button1"
-            android:layout_width="200dp"
-            android:layout_margin="2dp"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_height="wrap_content"
             android:text="Change Image" 
             style="@style/CustomStyleButton"/>

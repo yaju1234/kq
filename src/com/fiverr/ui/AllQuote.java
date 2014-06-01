@@ -78,14 +78,27 @@ public class AllQuote extends Activity implements OnClickListener{
 	private double avg_rate;
 	
 	private TextView tv_mAvgRating;
+	private TextView tv_mHeading;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.ac_image_pager);
+		
+		tv_mHeading = (TextView)findViewById(R.id.quote_heading);
+		
 		Intent intent = getIntent();
 		tempParentID = intent.getStringExtra("test");
 		quote_type = intent.getStringExtra("quote_type");
-		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");		
+		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");	
+		
+		if(quote_type.equals("fav")){
+			tv_mHeading.setText("Favourites Posts");
+		}else if(quote_type.equals("all")){
+			tv_mHeading.setText("Browse Posts");
+		}else if(quote_type.equals("kid_qoute")){
+			tv_mHeading.setText("kid's Posts");
+		}
 		btn_mSortByNewest = (Button)findViewById(R.id.btn_sort_by_newest);
 		btn_mSortByOldest = (Button)findViewById(R.id.btn_sort_by_oldest);
 		
@@ -106,10 +119,14 @@ public class AllQuote extends Activity implements OnClickListener{
 		
 		//quote = new Quote();
 		if(isOnline()){
+			btn_mSortByNewest.setVisibility(View.VISIBLE);
+			btn_mSortByOldest.setVisibility(View.VISIBLE);
 			new GetQuotes().execute();
 			
 		}else{
 			Toast.makeText(this.getApplicationContext(),"No Internet connection", Toast.LENGTH_LONG).show();
+			btn_mSortByNewest.setVisibility(View.INVISIBLE);
+			btn_mSortByOldest.setVisibility(View.INVISIBLE);
 		}
 		btn_mSortByNewest.setOnClickListener(this);
 		btn_mSortByOldest.setOnClickListener(this);
@@ -490,29 +507,18 @@ public class AllQuote extends Activity implements OnClickListener{
 	}
 	public void callShare(String quote_text, String image, String video) {
 		// TODO Auto-generated method stub
-		/*Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, quote_text);
-        if(!image.equals("")){
-        	 shareIntent.setType("image/jpeg");
-             shareIntent.putExtra(Intent.EXTRA_STREAM, image);	
-        }
-       
-        
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_SEND);
+		intent.setType("image/*");      
 
-        startActivity(Intent.createChooser(shareIntent, "Share"));*/
-        Log.e("image",image);
-        
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.setType("image/jpeg"); 
-        shareIntent.putExtra(Intent.EXTRA_TEXT,quote_text+"\n **************** \n Quote Shared by PlayGround Humor APP");
-       // shareIntent.setType("text/plain");
-        
-		if(!image.equals("")){	
-			 shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(image));        	             	
-        }		 
-		startActivity(Intent.createChooser(shareIntent, "Share Quote Via"));
+		intent.putExtra(Intent.EXTRA_TEXT, "eample");
+		intent.putExtra(Intent.EXTRA_TITLE, "example");
+		intent.putExtra(Intent.EXTRA_SUBJECT, "example");
+		intent.putExtra(Intent.EXTRA_STREAM, image);
+
+		Intent openInChooser = new Intent(intent);
+		//openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+		startActivity(openInChooser);
 	}
 	
 	/*  @Override

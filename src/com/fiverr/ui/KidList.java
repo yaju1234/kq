@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fiverr.helper.Constant;
 import com.fiverr.helper.UserFunctions;
 import com.fiverr.model.Kid;
 
@@ -35,7 +36,13 @@ private Kid kid;
 		kids = new ArrayList<Kid>();
 		new GetKids().execute();
 	}
-
+	@Override
+	public void onResume(){
+		if(Constant.mEditKidFlag == true){
+			Constant.mEditKidFlag = false ;
+			new GetKids().execute();
+		}		
+	}
 
 
 private class GetKids extends AsyncTask<Void , Void, Void>{
