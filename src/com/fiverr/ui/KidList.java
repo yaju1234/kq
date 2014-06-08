@@ -38,6 +38,7 @@ private Kid kid;
 	}
 	@Override
 	public void onResume(){
+		super.onResume();
 		if(Constant.mEditKidFlag == true){
 			Constant.mEditKidFlag = false ;
 			new GetKids().execute();
@@ -53,6 +54,7 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 	protected Void doInBackground(Void... arg0) {
 		// TODO Auto-generated method stub
 		try {
+			kids.clear();
 			UserFunctions user = new UserFunctions();
 			SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 			Log.d("PREFS STRING",settings.getString("Parent_ID", "0"));

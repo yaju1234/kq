@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.color;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -18,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,10 +28,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +52,6 @@ public class AllQuote extends Activity implements OnClickListener{
 	private String rate_parent_id,rate_quote_id,rate;
 	private int index = -1;
 	private List<Quote> QuoteArray;
-	private List<Quote> QuoteArraySecond;
 	//private ViewFlipper flipper;
 	private Quote quote;
 	private Kid kid;
@@ -77,8 +80,18 @@ public class AllQuote extends Activity implements OnClickListener{
 	
 	private double avg_rate;
 	
-	private TextView tv_mAvgRating;
+	private RatingBar tv_mAvgRating;
 	private TextView tv_mHeading;
+	
+	private String sort_type_select = "ASC";
+	private int all_quote_index = 0;
+	private int fav_quote_index = 0;
+	private int kid_quote_index = 0;
+	
+	public int selected_index = 0;
+	private boolean mPageEnd = false;  
+	
+	public ViewPager pager;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -86,18 +99,26 @@ public class AllQuote extends Activity implements OnClickListener{
 		setContentView(R.layout.ac_image_pager);
 		
 		tv_mHeading = (TextView)findViewById(R.id.quote_heading);
+		pager = (ViewPager)findViewById(R.id.pager);
 		
 		Intent intent = getIntent();
 		tempParentID = intent.getStringExtra("test");
 		quote_type = intent.getStringExtra("quote_type");
+		QuoteArray = new ArrayList<Quote>();
 		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");	
 		
 		if(quote_type.equals("fav")){
 			tv_mHeading.setText("Favourites Posts");
+			fav_quote_index = 0;
+			QuoteArray.clear();
 		}else if(quote_type.equals("all")){
 			tv_mHeading.setText("Browse Posts");
+			all_quote_index = 0;
+			QuoteArray.clear();
 		}else if(quote_type.equals("kid_qoute")){
 			tv_mHeading.setText("kid's Posts");
+			kid_quote_index = 0;
+			QuoteArray.clear();
 		}
 		btn_mSortByNewest = (Button)findViewById(R.id.btn_sort_by_newest);
 		btn_mSortByOldest = (Button)findViewById(R.id.btn_sort_by_oldest);
@@ -114,8 +135,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		//btnFav.setTypeface(cTypeface);
 		
 		
-		QuoteArray = new ArrayList<Quote>();
-		QuoteArraySecond = new ArrayList<Quote>(); 
+		 
 		
 		//quote = new Quote();
 		if(isOnline()){
@@ -131,7 +151,51 @@ public class AllQuote extends Activity implements OnClickListener{
 		btn_mSortByNewest.setOnClickListener(this);
 		btn_mSortByOldest.setOnClickListener(this);
 		
+		
+		pager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				selected_index = arg0;
+				
+			}
+			 boolean callHappened;
+			@Override
+			public void onPageScrolled(int position, float arg1, int arg2) {
+				
+				 if( mPageEnd && position == selected_index /*&& !callHappened*/)
+			        {
+			            Log.d(getClass().getName(), "Okay");
+			            mPageEnd = false;//To avoid multiple calls. 
+			          //  callHappened = true;
+			            if(position == QuoteArray.size()-1){
+							if(quote_type.equals("all")){
+								all_quote_index = all_quote_index + 20;
+							}else if(quote_type.equals("fav")){
+								fav_quote_index = fav_quote_index + 20;
+							}else if(quote_type.equals("kid_qoute")){
+								kid_quote_index = kid_quote_index + 20;
+							}
+							new GetQuotes().execute();
+						}
+			        }else
+			        {
+			            mPageEnd = false;
+			        }
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				if(selected_index == QuoteArray.size() - 1)
+		        {
+		            mPageEnd = true;
+		        }
+				
+			}
+		});
 	}
+	
+	
 	private boolean isOnline()  {
 	    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo ni = cm.getActiveNetworkInfo();
@@ -150,16 +214,16 @@ public class AllQuote extends Activity implements OnClickListener{
 		UserFunctions userfunction = new UserFunctions();
 		SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 		if(quote_type.equals("fav")){
-			jsonObject = userfunction.getFavQuotes(tempParentID);
+			jsonObject = userfunction.getFavQuotes(tempParentID,sort_type_select,fav_quote_index);
 		}else if(quote_type.equals("all")){
 			if(settings.getString("Parent_ID", "0").equals("0")){
-				jsonObject =userfunction.getQuotes("0");
+				jsonObject =userfunction.getQuotes("0",sort_type_select,all_quote_index);
 			}else{
-				jsonObject =userfunction.getQuotes(settings.getString("Parent_ID", "0"));
+				jsonObject =userfunction.getQuotes("0",sort_type_select,all_quote_index);
+				//jsonObject =userfunction.getQuotes(settings.getString("Parent_ID", "0"));
 			}
-			
 		}else if(quote_type.equals("kid_qoute")){
-			jsonObject =userfunction.getQuotes(tempParentID);
+			jsonObject =userfunction.getQuotes(tempParentID,sort_type_select,kid_quote_index);
 		}
 				
 		try {
@@ -167,7 +231,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			
 				if(Integer.parseInt(jsonObject.getString(KEY_SUCCESS))==0){
 				
-				finish();
+				//finish();
 				}else{
 					jArray = jsonObject.getJSONArray("data");
 					for(int i=0;i<jArray.length();i++){
@@ -215,9 +279,9 @@ public class AllQuote extends Activity implements OnClickListener{
 							quote.setIsRated("1");
 						}
 						QuoteArray.add(quote);
-						QuoteArraySecond.add(quote);
 						
 				}
+					
 				}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -237,6 +301,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			pDialog.setIndeterminate(false);
 			pDialog.setCancelable(true);
 			pDialog.show();
+			
 		}
 		
 		@Override
@@ -250,7 +315,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			}
 			else{
 				
-				ViewPager pager = (ViewPager) findViewById(R.id.pager);
+				
 				PostAdapter adapter ;
 				if(quote_type.equals("fav")){
 					adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArray,quote_type);
@@ -259,97 +324,20 @@ public class AllQuote extends Activity implements OnClickListener{
 				}
 				
 				pager.setAdapter(adapter);
-				pager.setCurrentItem(0);
-				
-				//QuoteArraySecond = QuoteArray;
-				Collections.reverse(QuoteArraySecond);
-				/*
-			++index;
-			txtQuote.setText(QuoteArray.get(index).getQuote_Text());
-			txtName.setText(QuoteArray.get(index).getChild_name()+"\n Age:"+QuoteArray.get(index).getChild_age()+" Gender :"+QuoteArray.get(index).getChild_gender());
-			imgloader.DisplayImage(Constant.imagr_url+QuoteArray.get(index).getImage_Id(), iv_kid);
-			
-			setFlipper(QuoteArray);	*/
+				if(quote_type.equals("kid_qoute")){
+					pager.setCurrentItem(kid_quote_index);
+				}else if(quote_type.equals("all")){
+					pager.setCurrentItem(all_quote_index);
+				}else if(quote_type.equals("fav")){
+					pager.setCurrentItem(fav_quote_index);
+				}
 			}
 			pDialog.dismiss();
 		}
 	}
-	/*private void setFlipper(List<Quote> quoteArray) {
-		// TODO Auto-generated method stub			
-		if(flipper.getChildCount()>0){			
-	        while (flipper.getChildCount() > 0)
-	        	flipper.removeViewAt(0);
-		}
-		LayoutInflater inflater = (LayoutInflater)this.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-		
-		for(pos=0; pos<quoteArray.size(); pos++){
-		View view = inflater.inflate( R.layout.each_activity_quote, null );
-		TextView child_name=(TextView)view.findViewById(R.id.textName);
-		TextView child_age=(TextView)view.findViewById(R.id.textAge);
-		TextView child_gender=(TextView)view.findViewById(R.id.textGender);
-		ImageView child_img = (ImageView)view.findViewById(R.id.imgKid);
-		TextView child_quote=(TextView)view.findViewById(R.id.textQuote);
-		Button btn_fav =(Button)view.findViewById(R.id.btnFav);
-		Button btn_rate =(Button)view.findViewById(R.id.btnRate);
-		Button quote_share = (Button)view.findViewById(R.id.quoteShare);
-		
-		if(quote_type.equals("fav")){
-			btn_fav.setVisibility(View.GONE);
-			btn_rate.setVisibility(View.GONE);
-			quote_share.setVisibility(View.GONE);
-		}
-		
-		child_name.setText(quoteArray.get(pos).getChild_name());
-		child_age.setText("Age : " + quoteArray.get(pos).getChild_age()+"yr");
-		
-		if(quoteArray.get(pos).getChild_gender().equals("f")){
-			child_gender.setText("Gender : "+ "Female");
-		}else{
-			child_gender.setText("Gender : "+ "Male");
-		}
-		
-		child_quote.setText(quoteArray.get(pos).getQuote_Text());
-		imgloader.DisplayImage("http://playgroundhumor.com/demo"+quoteArray.get(pos).getImage_Id(), child_img);
-		
-		
-		btn_rate.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {				
-				// custom dialog
-				final Dialog dialog = new Dialog(context);
-				dialog.setContentView(R.layout.custom_dialog);
-				dialog.setTitle("Rate this Quote");
-				Button dialogBtn = (Button) dialog.findViewById(R.id.Submit);
-				final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.ratingBar);
-				dialogBtn.setOnClickListener( new OnClickListener() {
-					
-					@Override
-					public void onClick(View arg0) {
-						// code for rating
-						SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
-						rate_parent_id = settings.getString("Parent_ID", "0");
-						rate_quote_id =""+QuoteArray.get(cur_pos-1).getQuote_Id();
-						rate =""+ratingBar.getRating();
-						Log.d("Rate",""+rate_parent_id+" "+rate_quote_id+" "+rate);
-						new RateQuote().execute();
-						dialog.dismiss();
-					}
-				});
-				dialog.show();
-			}
-		});
-		btn_fav.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub				
-				new MarkFav().execute(""+QuoteArray.get(cur_pos-1).getQuote_Id());
-			}
-		});
-		flipper.addView(view);	
-		}
-	}*/	
+	
+	
+	
 	
 	public class RateQuote extends AsyncTask<String[], String, Boolean> {
 
@@ -384,7 +372,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			super.onPostExecute(result);
 			QuoteArray.get(Quote_pos).setIsRated("1");
 			QuoteArray.get(Quote_pos).setAvg_Rate(avg_rate);
-			tv_mAvgRating.setText("Average Rating :"+String.valueOf(avg_rate));
+			tv_mAvgRating.setRating(Float.parseFloat(String.valueOf(avg_rate)));
 		}
 	}
 	
@@ -402,8 +390,7 @@ public class AllQuote extends Activity implements OnClickListener{
 					Log.d("Fav Quote","Sucess marking fav");
 					QuoteArray.get(Quote_pos).setIsfavQuote("1");
 					//QuoteArraySecond = QuoteArray;
-					Collections.copy(QuoteArraySecond,QuoteArray);
-					Collections.reverse(QuoteArraySecond);
+					
 				}else{
 					Log.d("Fav Quote","Fails marking fav");
 				}
@@ -414,7 +401,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		}		
 	}
 	
-	public void callRate(final int quote_id, int position, TextView avg_rating) {
+	public void callRate(final int quote_id, int position, RatingBar avg_rating, final ImageView iv_rate) {
 		// TODO Auto-generated method stub
 		tv_mAvgRating=avg_rating;
 		Quote_pos=position;
@@ -432,6 +419,7 @@ public class AllQuote extends Activity implements OnClickListener{
 				rate_quote_id =""+quote_id;
 				rate =""+ratingBar.getRating();
 				Log.d("Rate",""+rate_parent_id+" "+rate_quote_id+" "+rate);
+				iv_rate.setImageResource(R.drawable.disable_quote_rate);
 				new RateQuote().execute();
 				dialog.dismiss();
 			}
@@ -480,7 +468,19 @@ public class AllQuote extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		if(v == btn_mSortByNewest){		   
 		    
-		    ViewPager pager = (ViewPager) findViewById(R.id.pager);
+			sort_type_select = "ASC";
+			all_quote_index = 0;
+			kid_quote_index = 0;
+			fav_quote_index = 0;
+			
+			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#fe1234"));
+			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#fe8300"));
+			
+			QuoteArray.clear();
+			
+			new GetQuotes().execute();
+			
+		    /*ViewPager pager = (ViewPager) findViewById(R.id.pager);
 			PostAdapter adapter ;
 			if(quote_type.equals("fav")){
 				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArray,quote_type);
@@ -489,11 +489,21 @@ public class AllQuote extends Activity implements OnClickListener{
 			}
 			
 			pager.setAdapter(adapter);
-			pager.setCurrentItem(0);
+			pager.setCurrentItem(0);*/
 		}
-		if(v == btn_mSortByOldest){		   
+		if(v == btn_mSortByOldest){	
+			
+			sort_type_select = "DESC";
+			all_quote_index = 0;
+			kid_quote_index = 0;
+			fav_quote_index = 0;
+			
+			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#fe8300"));
+			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#fe1234"));
+			
+			QuoteArray.clear();
 		    
-		    ViewPager pager = (ViewPager) findViewById(R.id.pager);
+		    /*ViewPager pager = (ViewPager) findViewById(R.id.pager);
 			PostAdapter adapter ;
 			if(quote_type.equals("fav")){
 				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArraySecond,quote_type);
@@ -502,7 +512,8 @@ public class AllQuote extends Activity implements OnClickListener{
 			}
 			
 			pager.setAdapter(adapter);
-			pager.setCurrentItem(0);
+			pager.setCurrentItem(0);*/
+			new GetQuotes().execute();
 		}
 	}
 	public void callShare(String quote_text, String image, String video) {
@@ -556,4 +567,6 @@ public class AllQuote extends Activity implements OnClickListener{
            }
            return false;
     }*/
+	
+	
 }

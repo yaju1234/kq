@@ -30,6 +30,10 @@ public class UserFunctions {
 	private static String get_fav_quotes_tag="get_fav_quotes";
 	private static String edit_kid_details_tag ="update_kid_profile";
 	
+	private static String all_quote_desc = "DESC";
+	private static String all_quote_asc = "ASC";
+	private static String all_quote_rating = "";
+	
 	//constructor
 	public UserFunctions(){
 		jsonParser = new JSON_Parser();
@@ -64,10 +68,7 @@ public class UserFunctions {
 			return json;
 		}else{
 			return null;
-		}
-		
-		
-				
+		}		
 	}
 	
 	/**
@@ -105,22 +106,40 @@ public class UserFunctions {
 		return jsonArray;
 	}*/
 	
-	public JSONObject getQuotes(String ParentID){
+	public JSONObject getQuotes(String ParentID,String sort_type_select,int index_value){
 		//Building Parameters
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("tag", quote_tag));
 				params.add(new BasicNameValuePair("parent_id", ParentID));
+				if(sort_type_select.equalsIgnoreCase("ASC")){
+					params.add(new BasicNameValuePair("sort", all_quote_asc));
+					params.add(new BasicNameValuePair("start_index", ""+index_value));
+					params.add(new BasicNameValuePair("items_per_page", "20"));
+				}else if(sort_type_select.equalsIgnoreCase("DESC")){
+					params.add(new BasicNameValuePair("sort", all_quote_desc));
+					params.add(new BasicNameValuePair("start_index", ""+index_value));
+					params.add(new BasicNameValuePair("items_per_page", "20"));
+				}
 		//getting JSON Object
 				Log.e("parent id", ParentID);
 		JSONObject jsonObject = jsonParser.getJSONFromUrl(APIUrl, params);
 		return jsonObject;
 	}
 	
-	public JSONObject getFavQuotes(String parent_ID){
+	public JSONObject getFavQuotes(String parent_ID,String sort_type_select,int index_value){
 		//Building Parameters
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", get_fav_quotes_tag));
 		params.add(new BasicNameValuePair("parent_id",parent_ID));
+		if(sort_type_select.equalsIgnoreCase("ASC")){
+			params.add(new BasicNameValuePair("sort", all_quote_asc));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}else if(sort_type_select.equalsIgnoreCase("DESC")){
+			params.add(new BasicNameValuePair("sort", all_quote_desc));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}
 		
 		//getting JSON Object
 		JSONObject jsonObject = jsonParser.getJSONFromUrl(APIUrl, params);

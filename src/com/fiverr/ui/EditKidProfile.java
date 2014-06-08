@@ -72,8 +72,9 @@ public class EditKidProfile extends Activity {
 	ProgressDialog pDialog;
 	private ImageLoader imgLoader;
 	public HttpEntity resEntity;
-	private String is_image_change = "N";
-	
+	private String is_image_change = "0";
+	private RadioButton male;
+	private RadioButton female;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -92,6 +93,8 @@ public class EditKidProfile extends Activity {
 		btnUploadImage = (Button) findViewById(R.id.button1);
 		btnUploadImage.setTypeface(cTypeFace);
 		//btnUploadImage.setVisibility(View.GONE);
+		male = (RadioButton)findViewById(R.id.radio0);
+		female = (RadioButton)findViewById(R.id.radio1);
 		imgLoader = new ImageLoader(getApplicationContext());
 		
 		
@@ -159,7 +162,7 @@ public class EditKidProfile extends Activity {
 					    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 					    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
 					    iv_profile_pic.setImageBitmap(myBitmap);
-					    is_image_change = "Y";
+					    is_image_change = "1";
 					}
 				} catch (Exception e) {
 
@@ -370,6 +373,13 @@ public class EditKidProfile extends Activity {
 		NickName.setText(KidArray.get(0).getNick_Name());
 		Age.setText(KidArray.get(0).getAge());
 		About.setText(KidArray.get(0).getAbout());
+		if(KidArray.get(0).getGender().equals("m")){
+			male.setChecked(true);
+			female.setChecked(false);
+		}else{
+			female.setChecked(true);
+			male.setChecked(false);
+		}
 		imgLoader.DisplayImage("http://playgroundhumor.com/demo"+KidArray.get(0).getImage(),  iv_profile_pic);
 		pDialog.dismiss();
 	}
@@ -384,8 +394,8 @@ public class EditKidProfile extends Activity {
 				try {
 				UserFunctions userFunction = new UserFunctions();
 				SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
-				Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
-				Log.d("Kid ID + Parent ID",""+KidArray.get(0).getKid_ID()+"++"+KidArray.get(0).getParen_ID());
+				/*Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
+				Log.d("Kid ID + Parent ID",""+KidArray.get(0).getKid_ID()+"++"+KidArray.get(0).getParen_ID());*/
 				//JSONObject json= userFunction.editKidProfile(KidArray.get(0).getKid_ID()+"".trim(), KidArray.get(0).getParen_ID()+"".trim(), KidName.getText().toString(), NickName.getText().toString(), Sex, Age.getText().toString(), About.getText().toString(), Imagename);
 				//
 				HttpClient httpClient = new DefaultHttpClient();
@@ -407,7 +417,9 @@ public class EditKidProfile extends Activity {
 						entity.addPart("age", new StringBody(Age.getText().toString()));
 						Log.e("about", About.getText().toString());
 						entity.addPart("about", new StringBody(About.getText().toString()));
-						if(is_image_change.equals("Y")){
+						Log.e("is_image_change", is_image_change);
+						entity.addPart("is_image_change", new StringBody(is_image_change));
+						if(is_image_change.equals("1")){
 							Log.e("image", profileImagePath);
 							entity.addPart("image", new FileBody(new File(profileImagePath)));
 						}
@@ -485,6 +497,8 @@ public class EditKidProfile extends Activity {
 						Toast.makeText(EditKidProfile.this, "Profile Edited successfully", Toast.LENGTH_LONG).show();
 						finish();
 						Constant.mEditKidFlag = true ;
+					}else{
+						Toast.makeText(EditKidProfile.this, "Profile not Edited, please try again", Toast.LENGTH_LONG).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

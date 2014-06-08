@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="10dp"
+    android:orientation="vertical"
+    android:background="#a5b0ca"
     android:paddingBottom="10dp"
-    android:background="#a5b0ca" >
+    android:paddingTop="10dp" >
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:max="5"
-        android:stepSize="1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:max="5"
+        android:stepSize="1" />
 
-    <Button
-        android:id="@+id/Submit"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical" >
+        <Button
+        android:id="@+id/Submit"
+        style="@style/CustomStyleButton"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/ratingBar"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:text="SUBMIT" 
-        style="@style/CustomStyleButton"/>
+        android:text="SUBMIT" />
+    </LinearLayout>
 
-</RelativeLayout>
+    
+
+</LinearLayout>

@@ -44,6 +44,8 @@
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.VideoPlayView" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+         <activity android:name="com.fiverr.ui.ImageDetailScreen" 
+            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
     </application>
 
 </manifest>

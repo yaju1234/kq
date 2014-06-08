@@ -18,8 +18,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:layout_marginTop="5dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp">
 	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
@@ -27,13 +28,29 @@
         android:gravity="center_vertical">
         <Button
             android:id="@+id/btn_sort_by_newest"
-            android:layout_width="100dp"
-            android:layout_height="40dp"            
+            android:layout_width="70dp"
+            android:layout_height="25dp"            
             android:background="#fe8300"
             android:gravity="center"
             android:text="Newest"
             android:layout_marginRight="2dp"
-            android:textSize="14sp" 
+            android:textSize="12sp" 
+            />
+	</LinearLayout>
+	<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_weight="1" 
+        android:gravity="center">
+        <Button
+            android:id="@+id/btn_sort_by_rating"
+            android:layout_width="70dp"
+            android:layout_height="25dp"            
+            android:background="#fe8300"
+            android:gravity="center"
+            android:text="Rating"
+            android:layout_marginRight="2dp"
+            android:textSize="12sp" 
             />
 	</LinearLayout>
 	<LinearLayout
@@ -43,13 +60,13 @@
         android:gravity="center_vertical|right">
         <Button
             android:id="@+id/btn_sort_by_oldest"
-            android:layout_width="100dp"
-            android:layout_height="40dp"            
+            android:layout_width="70dp"
+            android:layout_height="25dp"            
             android:background="#fe8300"
             android:layout_marginRight="2dp"
             android:gravity="center"
             android:text="Oldest"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 	</LinearLayout>
         <!-- <Button
             android:id="@+id/btn_sort_by_text"

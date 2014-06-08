@@ -19,10 +19,8 @@ public class Menu extends Activity{
 	
 	private TextView tv_signin;
 	private ImageView iv_signin;
-	//private Typeface cTypeFace,cTypeFace2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu);
 		
@@ -36,8 +34,6 @@ public class Menu extends Activity{
 		tv_signin = (TextView)findViewById(R.id.tv_signin);
 		iv_signin = (ImageView)findViewById(R.id.iv_signin);
 		
-		//cTypeFace = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");
-		//cTypeFace2 = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");
 		
 		settings = getSharedPreferences("MYPREFS", 0);
 		Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
@@ -71,7 +67,6 @@ public class Menu extends Activity{
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if(settings.getString("Parent_ID", "0").equals("0")){
 					Toast.makeText(getApplicationContext(),
 							"you have to Login first",
@@ -87,7 +82,6 @@ public class Menu extends Activity{
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				if(settings.getString("Parent_ID", "0").equals("0")){
 					Toast.makeText(getApplicationContext(),
 							"you have to Login first",
@@ -102,8 +96,6 @@ public class Menu extends Activity{
 			
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				//Intent browseQuotes = new Intent(Menu.this,Quotes.class);
 				Intent browseQuotes = new Intent(Menu.this,AllQuote.class);
 				browseQuotes.putExtra("test", "0");
 				browseQuotes.putExtra("quote_type", "all");
@@ -114,13 +106,9 @@ public class Menu extends Activity{
 				
 				@Override
 				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
 					if(settings.getString("Parent_ID", "0").equals("0")){
-						Toast.makeText(getApplicationContext(),
-								"you have to Login first",
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(),"you have to Login first",Toast.LENGTH_LONG).show();
 					}else{
-					//Intent browseQuotes = new Intent(Menu.this,FavQuotes.class);
 					Intent browseQuotes = new Intent(Menu.this,AllQuote.class);
 					SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 					browseQuotes.putExtra("test", settings.getString("Parent_ID", "0"));
@@ -133,13 +121,9 @@ public class Menu extends Activity{
 				
 				@Override
 				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
 					if(settings.getString("Parent_ID", "0").equals("0")){
-						Toast.makeText(getApplicationContext(),
-								"you have to Login first",
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(),	"you have to Login first",Toast.LENGTH_LONG).show();
 					}else{
-						//Intent browseQuotes = new Intent(Menu.this,Quotes.class);
 						Intent browseQuotes = new Intent(Menu.this,AllQuote.class);
 						SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 						browseQuotes.putExtra("test", settings.getString("Parent_ID", "0"));

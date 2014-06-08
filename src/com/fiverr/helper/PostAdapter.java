@@ -21,8 +21,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +53,7 @@ public class PostAdapter extends PagerAdapter {
 	@Override
 	public Object instantiateItem(ViewGroup view, final int position){
 		View convertView = inflater.inflate(R.layout.each_activity_quote, view, false);
-		final TextView avg_rating=(TextView)convertView.findViewById(R.id.avg_rating);
+		final RatingBar avg_rating=(RatingBar)convertView.findViewById(R.id.avg_rating);
 		TextView child_name=(TextView)convertView.findViewById(R.id.textName);
 		TextView child_age=(TextView)convertView.findViewById(R.id.textAge);
 		TextView child_gender=(TextView)convertView.findViewById(R.id.textGender);
@@ -59,9 +61,15 @@ public class PostAdapter extends PagerAdapter {
 		TextView child_quote=(TextView)convertView.findViewById(R.id.textQuote);
 		ImageView imageQuote = (ImageView)convertView.findViewById(R.id.imageQuote);
 		child_quote.setMovementMethod(new ScrollingMovementMethod());
-		final Button btn_fav =(Button)convertView.findViewById(R.id.btn_fav);
-		final Button iv_rate =(Button)convertView.findViewById(R.id.iv_rate);
-		Button iv_share = (Button)convertView.findViewById(R.id.iv_share);
+		final LinearLayout ll_fav =(LinearLayout)convertView.findViewById(R.id.ll_fav);
+		final LinearLayout ll_rate =(LinearLayout)convertView.findViewById(R.id.ll_rate);
+		final LinearLayout ll_share = (LinearLayout)convertView.findViewById(R.id.ll_share);
+		
+		
+		final ImageView iv_fav =(ImageView)convertView.findViewById(R.id.iv_fav);
+		final ImageView iv_rate =(ImageView)convertView.findViewById(R.id.iv_rate);
+		final ImageView iv_share = (ImageView)convertView.findViewById(R.id.iv_share);
+		
 		final ImageView vv_preview = (ImageView)convertView.findViewById(R.id.videoPreview);
 		final CustomVideoView vv = (CustomVideoView)convertView.findViewById(R.id.videoQuote);
 		RelativeLayout rl_videoQuote = (RelativeLayout)convertView.findViewById(R.id.rl_videoQuote);
@@ -69,12 +77,13 @@ public class PostAdapter extends PagerAdapter {
 		final ProgressBar bar = (ProgressBar)convertView.findViewById(R.id.progressBar1);
 		
 		if(quote_type.equals("fav")){
-			btn_fav.setVisibility(View.GONE);
-			iv_rate.setVisibility(View.GONE);
+			ll_fav.setVisibility(View.GONE);
+			ll_rate.setVisibility(View.GONE);
 		}
 		final Quote kid = kids.get(position);
 		
-		avg_rating.setText("Average Rating: "+kid.getAvg_Rate());
+		//avg_rating.setText("Average Rating: "+kid.getAvg_Rate());
+		avg_rating.setRating(Float.parseFloat(""+kid.getAvg_Rate()));
 		child_name.setText(kid.getChild_name());
 		child_age.setText("Age : " + kid.getChild_age()+"yr");
 		
@@ -112,22 +121,22 @@ public class PostAdapter extends PagerAdapter {
 		
 		
 		if(kid.getIsRate().equals("0")){
-			iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.rate_quote, 0, 0);
+			iv_rate.setImageResource(R.drawable.rate_quote);
 		}else{
-			iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_rate, 0, 0);
+			iv_rate.setImageResource( R.drawable.disable_quote_rate);
 		}
 		
 		if(!kid.getIsfavQuote().equals("0")){
-			btn_fav.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_fav, 0, 0);
+			iv_fav.setImageResource( R.drawable.disable_quote_fav);
 		}else {
-			btn_fav.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.fav_quote, 0, 0);
+			iv_fav.setImageResource(R.drawable.fav_quote);
 		}
 		
-		btn_fav.setOnClickListener(new OnClickListener() {
+		ll_fav.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				if(kid.getIsfavQuote().equals("0")){
-					btn_fav.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_fav, 0, 0);
+					iv_fav.setImageResource(R.drawable.disable_quote_fav);
 					act.callMarkAsFav(kid.getQuote_Id(),position);	
 				}else{
 					Toast.makeText(act, "You already marked it as favourite", Toast.LENGTH_SHORT)
@@ -179,13 +188,13 @@ public class PostAdapter extends PagerAdapter {
 				
 			}
 		});*/
-		iv_rate.setOnClickListener(new OnClickListener() {
+		ll_rate.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				if(kid.getIsRate().equals("0")){
-					iv_rate.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.disable_quote_rate, 0, 0);
-					act.callRate(kid.getQuote_Id(),position,avg_rating);
+					//ll_rate.setBackgroundResource(R.drawable.disable_quote_rate);
+					act.callRate(kid.getQuote_Id(),position,avg_rating,iv_rate);
 				}else{
 					Toast.makeText(act, "You already rate it...", Toast.LENGTH_SHORT)
 					.show();
@@ -193,12 +202,12 @@ public class PostAdapter extends PagerAdapter {
 				
 			}
 		});
-		iv_share.setOnClickListener(new OnClickListener() {
+		ll_share.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				act.callShare(kid.getQuote_Text(),"http://playgroundhumor.com/demo"+kid.getImage_Id(),"http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id());
+				//act.callShare(kid.getQuote_Text(),"http://playgroundhumor.com/demo"+kid.getImage_Id(),"http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id());
 			}
 		});
 		((ViewPager) view).addView(convertView, 0);
