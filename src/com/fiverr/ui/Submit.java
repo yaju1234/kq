@@ -68,7 +68,7 @@ public class Submit extends Activity{
 		Intent getKidIdIntent = getIntent();
 		kid_id = getKidIdIntent.getExtras().getInt("kid_id");
 		eQuote =(EditText) findViewById(R.id.editText1);
-		btnImageUploader = (Button) findViewById(R.id.button1);
+		//btnImageUploader = (Button) findViewById(R.id.button1);
 		btnVideoUploader = (Button) findViewById(R.id.button2);
 		btnSubmit =(Button) findViewById(R.id.button3);
 		customVideoView = (CustomVideoView)findViewById(R.id.videoQuote);
@@ -77,7 +77,7 @@ public class Submit extends Activity{
 		//btnImageUploader.setVisibility(View.GONE);
 		//btnSubmit.setTypeface(cTypeface);
 		//btnVideoUploader.setTypeface(cTypeface);
-		btnVideoUploader.setVisibility(View.GONE);
+		//btnVideoUploader.setVisibility(View.GONE);
 		btnSubmit.setOnClickListener( new OnClickListener() {
 			
 			@Override
@@ -88,7 +88,7 @@ public class Submit extends Activity{
 		});
 		
 		
-		btnImageUploader.setOnClickListener(new OnClickListener() {
+		btnVideoUploader.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -177,6 +177,7 @@ public class Submit extends Activity{
 						if(imgflag == 1){
 							customVideoView.setVisibility(View.GONE);
 							imgKid.setVisibility(View.VISIBLE);
+							btnVideoUploader.setVisibility(View.GONE);
 							if(imgFile.exists()){
 							    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 							    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
@@ -186,6 +187,7 @@ public class Submit extends Activity{
 						}else{
 							customVideoView.setVisibility(View.VISIBLE);
 							imgKid.setVisibility(View.GONE);
+							btnVideoUploader.setVisibility(View.GONE);
 							customVideoView.setVideoURI(Uri.parse((kidsImagePath)));
 					        MediaController mc = new MediaController(Submit.this);
 					        customVideoView.setMediaController(mc);

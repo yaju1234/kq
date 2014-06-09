@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,8 +74,9 @@ public class AllQuote extends Activity implements OnClickListener{
 	
 	private String quote_type;
 	
-	private Button btn_mSortByNewest;
-	private Button btn_mSortByOldest;
+	private LinearLayout btn_mSortByNewest;
+	private LinearLayout btn_mSortByOldest;
+	private LinearLayout btn_sort_by_rating;
 	
 	private int Quote_pos = 0;
 	
@@ -120,8 +122,9 @@ public class AllQuote extends Activity implements OnClickListener{
 			kid_quote_index = 0;
 			QuoteArray.clear();
 		}
-		btn_mSortByNewest = (Button)findViewById(R.id.btn_sort_by_newest);
-		btn_mSortByOldest = (Button)findViewById(R.id.btn_sort_by_oldest);
+		btn_mSortByNewest = (LinearLayout)findViewById(R.id.btn_sort_by_newest);
+		btn_mSortByOldest = (LinearLayout)findViewById(R.id.btn_sort_by_oldest);
+		btn_sort_by_rating = (LinearLayout)findViewById(R.id.btn_sort_by_rating);
 		
 		imgloader = new ImageLoader(getApplicationContext());
 		/////----------------------------------
@@ -129,15 +132,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		if(kqDbAdapter.fetChValue()!=null){
 			Constant.kqArrRating = kqDbAdapter.fetChValue();
 		}
-		//btnRate.setTypeface(cTypeface);
-		//txtName.setTypeface(cTypeface);
-		//txtQuote.setTypeface(cTypeface);
-		//btnFav.setTypeface(cTypeface);
 		
-		
-		 
-		
-		//quote = new Quote();
 		if(isOnline()){
 			btn_mSortByNewest.setVisibility(View.VISIBLE);
 			btn_mSortByOldest.setVisibility(View.VISIBLE);
@@ -150,7 +145,11 @@ public class AllQuote extends Activity implements OnClickListener{
 		}
 		btn_mSortByNewest.setOnClickListener(this);
 		btn_mSortByOldest.setOnClickListener(this);
+		btn_sort_by_rating.setOnClickListener(this);
 		
+		btn_mSortByNewest.setBackgroundColor(Color.parseColor("#c9653f"));
+		btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+		btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
 		
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
 			
@@ -389,8 +388,6 @@ public class AllQuote extends Activity implements OnClickListener{
 				if(Integer.parseInt(success)==1){
 					Log.d("Fav Quote","Sucess marking fav");
 					QuoteArray.get(Quote_pos).setIsfavQuote("1");
-					//QuoteArraySecond = QuoteArray;
-					
 				}else{
 					Log.d("Fav Quote","Fails marking fav");
 				}
@@ -402,7 +399,6 @@ public class AllQuote extends Activity implements OnClickListener{
 	}
 	
 	public void callRate(final int quote_id, int position, RatingBar avg_rating, final ImageView iv_rate) {
-		// TODO Auto-generated method stub
 		tv_mAvgRating=avg_rating;
 		Quote_pos=position;
 		final Dialog dialog = new Dialog(context);
@@ -413,7 +409,6 @@ public class AllQuote extends Activity implements OnClickListener{
 		dialogBtn.setOnClickListener( new OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// code for rating
 				SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 				rate_parent_id = settings.getString("Parent_ID", "0");
 				rate_quote_id =""+quote_id;
@@ -428,7 +423,6 @@ public class AllQuote extends Activity implements OnClickListener{
 	}
 	
 	public void callMarkAsFav(int quote_Id, int position) {
-		// TODO Auto-generated method stub
 		settings = getSharedPreferences("MYPREFS", 0);
 		Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
 		if(settings.getString("Parent_ID", "0").equals("0")){
@@ -447,7 +441,6 @@ public class AllQuote extends Activity implements OnClickListener{
 		dialog.setButton2("No", listenerDoesNotAccept);
 		dialog.setCancelable(true);
 		dialog.show();
-
 	}
 
 	DialogInterface.OnClickListener listenerAccept = new DialogInterface.OnClickListener() {
@@ -458,66 +451,54 @@ public class AllQuote extends Activity implements OnClickListener{
 	};
 	DialogInterface.OnClickListener listenerDoesNotAccept = new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-			Toast.makeText(AllQuote.this, "Decline", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(AllQuote.this, "Decline", Toast.LENGTH_SHORT).show();
 		}
 	};
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		if(v == btn_mSortByNewest){		   
-		    
 			sort_type_select = "ASC";
 			all_quote_index = 0;
 			kid_quote_index = 0;
 			fav_quote_index = 0;
 			
-			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#fe1234"));
-			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#fe8300"));
+			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#c9653f"));
+			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+			btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
 			
 			QuoteArray.clear();
-			
 			new GetQuotes().execute();
 			
-		    /*ViewPager pager = (ViewPager) findViewById(R.id.pager);
-			PostAdapter adapter ;
-			if(quote_type.equals("fav")){
-				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArray,quote_type);
-			}else{
-				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this,QuoteArray,quote_type);
-			}
-			
-			pager.setAdapter(adapter);
-			pager.setCurrentItem(0);*/
-		}
-		if(v == btn_mSortByOldest){	
-			
+		}else if(v == btn_mSortByOldest){	
 			sort_type_select = "DESC";
 			all_quote_index = 0;
 			kid_quote_index = 0;
 			fav_quote_index = 0;
 			
-			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#fe8300"));
-			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#fe1234"));
+			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#c9653f"));
+			btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
 			
 			QuoteArray.clear();
-		    
-		    /*ViewPager pager = (ViewPager) findViewById(R.id.pager);
-			PostAdapter adapter ;
-			if(quote_type.equals("fav")){
-				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this, QuoteArraySecond,quote_type);
-			}else{
-				adapter = new com.fiverr.helper.PostAdapter(AllQuote.this,QuoteArraySecond,quote_type);
-			}
+			new GetQuotes().execute();
 			
-			pager.setAdapter(adapter);
-			pager.setCurrentItem(0);*/
+		}else if(v == btn_sort_by_rating){	
+			//Toast.makeText(getApplicationContext(), "aaa", 2000).show();
+			sort_type_select = "RATE";
+			all_quote_index = 0;
+			kid_quote_index = 0;
+			fav_quote_index = 0;
+			
+			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+			btn_sort_by_rating.setBackgroundColor(Color.parseColor("#c9653f"));
+			
+			QuoteArray.clear();
 			new GetQuotes().execute();
 		}
 	}
 	public void callShare(String quote_text, String image, String video) {
-		// TODO Auto-generated method stub
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_SEND);
 		intent.setType("image/*");      
@@ -528,45 +509,6 @@ public class AllQuote extends Activity implements OnClickListener{
 		intent.putExtra(Intent.EXTRA_STREAM, image);
 
 		Intent openInChooser = new Intent(intent);
-		//openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
 		startActivity(openInChooser);
 	}
-	
-	/*  @Override
-    public boolean onTouchEvent(MotionEvent event) {
-     // TODO Auto-generated method stub
-    	switch (event.getAction()) {
-           case MotionEvent.ACTION_DOWN:
-               initialX = event.getX();
-               break;
-           case MotionEvent.ACTION_UP:
-               float finalX = event.getX();
-               if (initialX > finalX)
-               {
-            	   if(cur_pos<QuoteArray.size()){
-            		   flipper.showNext();           		   
-            			   cur_pos++;                      
-            	   }else{
-            		   Toast.makeText(context, "Nothing to show more", Toast.LENGTH_LONG).show();
-            	   }
-                   
-                   
-               } 
-               else
-               {
-            	   if(cur_pos>1){
-            		   flipper.showPrevious();                	
-            			   cur_pos--;             		  
-            	   }else{
-            		   Toast.makeText(context, "Nothing to show more", Toast.LENGTH_LONG).show();
-            	   }
-            	   
-                
-               }
-               break;
-           }
-           return false;
-    }*/
-	
-	
 }

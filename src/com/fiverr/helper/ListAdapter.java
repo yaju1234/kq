@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fiverr.model.Kid;
@@ -26,9 +27,10 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 	private LayoutInflater mInflator;
 	//private Typeface cTypeFace;
 	private ImageLoader imgLoader;
+	private String mType;
 	
 	
-	public ListAdapter(Activity activity, int resource, List<Kid> objects) {
+	public ListAdapter(Activity activity, int resource, List<Kid> objects, String type) {
 		super(activity, resource, objects);
 		this.kids = objects;
 		this.mInflator = LayoutInflater.from(activity);
@@ -36,6 +38,7 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 				//"GochiHand-Regular.ttf");
 		imgLoader = new ImageLoader(activity);
 		// TODO Auto-generated constructor stub
+		this.mType = type;
 	}
 
 	@Override
@@ -44,13 +47,20 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 		if (convertView == null) {
 			convertView = mInflator	.inflate(R.layout.list_item_kid_detail, null);
 		}
-
+		LinearLayout ll_meachRow = (LinearLayout)convertView.findViewById(R.id.ll_each_row);
 		ImageView profile = (ImageView) convertView.findViewById(R.id.kid_icon);
 		TextView Kidname = (TextView) convertView.findViewById(R.id.kidName);
 		TextView Kidage = (TextView) convertView.findViewById(R.id.kidAge);
 		TextView KidNickNmae = (TextView) convertView.findViewById(R.id.kidName);
 		Button editbtn = (Button) convertView.findViewById(R.id.btnEdit);
 		Button postbtn = (Button) convertView.findViewById(R.id.btnPost);
+		
+		if(mType.equals("submit")){
+			editbtn.setVisibility(View.GONE);
+		}else{
+			postbtn.setVisibility(View.GONE);
+		}
+		
 		
 		final Kid kid = kids.get(position);
 		Kidname.setText(kid.getName());
@@ -69,7 +79,7 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 		}
 		
 		
-		editbtn.setOnClickListener(new OnClickListener() {
+		/*editbtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -78,6 +88,39 @@ public class ListAdapter extends ArrayAdapter<Kid> {
 						EditKidProfile.class);
 				editintent.putExtra("kid_id", kid.getKid_ID());
 				getContext().startActivity(editintent);
+				
+			}
+		});
+		
+		postbtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent postQuote = new Intent(getContext(),Submit.class);
+				postQuote.putExtra("kid_id", kid.getKid_ID());
+				getContext().startActivity(postQuote);
+			}
+		});*/
+		
+		ll_meachRow.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(mType.equals("submit")){
+					Intent postQuote = new Intent(getContext(),Submit.class);
+					postQuote.putExtra("kid_id", kid.getKid_ID());
+					postQuote.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					getContext().startActivity(postQuote);
+				}else{
+					Intent editintent = new Intent(getContext(),
+							EditKidProfile.class);
+					editintent.putExtra("kid_id", kid.getKid_ID());
+					editintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					getContext().startActivity(editintent);
+				}
+				
 				
 			}
 		});

@@ -17,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fiverr.helper.Constant;
 import com.fiverr.helper.UserFunctions;
 
 import android.app.Activity;
@@ -446,8 +447,9 @@ private ImageView imgKid;
 				JSONObject json = new JSONObject(sResponse);
 				if(json.getInt("success") ==1){
 					Toast.makeText(KidProfile.this, "Profile created successfully", Toast.LENGTH_LONG).show();
-					Intent i = new Intent(KidProfile.this,KidList.class);
-					startActivity(i);
+					/*Intent i = new Intent(KidProfile.this,KidList.class);
+					startActivity(i);*/
+					Constant.mEditKidFlag = true ;
 					KidProfile.this.finish();
 					
 				}

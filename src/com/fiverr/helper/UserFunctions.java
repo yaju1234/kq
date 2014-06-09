@@ -32,6 +32,7 @@ public class UserFunctions {
 	
 	private static String all_quote_desc = "DESC";
 	private static String all_quote_asc = "ASC";
+	private static String all_quote_rate = "RATE";
 	private static String all_quote_rating = "";
 	
 	//constructor
@@ -119,6 +120,10 @@ public class UserFunctions {
 					params.add(new BasicNameValuePair("sort", all_quote_desc));
 					params.add(new BasicNameValuePair("start_index", ""+index_value));
 					params.add(new BasicNameValuePair("items_per_page", "20"));
+				}else if(sort_type_select.equalsIgnoreCase("RATE")){
+					params.add(new BasicNameValuePair("sort", all_quote_rate));
+					params.add(new BasicNameValuePair("start_index", ""+index_value));
+					params.add(new BasicNameValuePair("items_per_page", "20"));
 				}
 		//getting JSON Object
 				Log.e("parent id", ParentID);
@@ -137,6 +142,10 @@ public class UserFunctions {
 			params.add(new BasicNameValuePair("items_per_page", "20"));
 		}else if(sort_type_select.equalsIgnoreCase("DESC")){
 			params.add(new BasicNameValuePair("sort", all_quote_desc));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}else if(sort_type_select.equalsIgnoreCase("RATE")){
+			params.add(new BasicNameValuePair("sort", all_quote_rate));
 			params.add(new BasicNameValuePair("start_index", ""+index_value));
 			params.add(new BasicNameValuePair("items_per_page", "20"));
 		}

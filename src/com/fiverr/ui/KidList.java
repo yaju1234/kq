@@ -18,8 +18,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -27,14 +29,40 @@ public class KidList extends Activity{
 	
 private ArrayList<Kid> kids;
 private Kid kid;
+private String type;
+private ImageView iv_maddQuote;
+private ListView kidlist ;
 
 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_kid_list);
+		kidlist = (ListView) findViewById(R.id.listKids);
+		iv_maddQuote = (ImageView)findViewById(R.id.iv_add_quote);
+		if(Constant.mEditKidFlag == false){
+			Bundle extras = getIntent().getExtras();
+			type = extras.getString("type");
+		}
+		
+		if(type.equals("submit")){
+			iv_maddQuote.setVisibility(View.GONE);
+		}
+		
 		kids = new ArrayList<Kid>();
 		new GetKids().execute();
+		
+		iv_maddQuote.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(KidList.this,KidProfile.class);
+				startActivity(intent);
+			}
+		});
+		
+		
 	}
 	@Override
 	public void onResume(){
@@ -95,10 +123,10 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 	@Override
 	protected void onPostExecute(Void result) {
 		pDialog.dismiss();
-		ListView kidlist = (ListView) findViewById(R.id.listKids);
-		ListAdapter adapter = new com.fiverr.helper.ListAdapter(KidList.this, R.layout.list_item_kid_detail, kids);
+		
+		ListAdapter adapter = new com.fiverr.helper.ListAdapter(KidList.this, R.layout.list_item_kid_detail, kids ,type);
 		kidlist.setAdapter(adapter);
-		kidlist.setOnItemClickListener(new OnItemClickListener() {
+		/*kidlist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,		long arg3) {
@@ -108,7 +136,7 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 				finish();
 			}
 			
-		});
+		});*/
 		
 		
 	}

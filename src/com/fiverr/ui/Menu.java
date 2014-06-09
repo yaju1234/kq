@@ -72,7 +72,9 @@ public class Menu extends Activity{
 							"you have to Login first",
 							Toast.LENGTH_LONG).show();
 				}else{
-				Intent intent = new Intent(Menu.this,KidProfile.class);
+				//Intent intent = new Intent(Menu.this,KidProfile.class);
+				Intent intent = new Intent(Menu.this,KidList.class);
+				intent.putExtra("type", "create");
 				startActivity(intent);
 				}
 			}
@@ -88,6 +90,7 @@ public class Menu extends Activity{
 							Toast.LENGTH_LONG).show();
 				}else{
 				Intent submitQuotes = new Intent(Menu.this,KidList.class);
+				submitQuotes.putExtra("type", "submit");
 				startActivity(submitQuotes);
 				}
 			}
