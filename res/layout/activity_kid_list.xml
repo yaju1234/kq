@@ -38,7 +38,7 @@
         android:layout_marginTop="5dp"
         android:cacheColorHint="@null"
         android:divider="@null"
-        android:dividerHeight="10dp"
+        android:dividerHeight="1dp"
         android:scrollbars="none" >
     </ListView>
 

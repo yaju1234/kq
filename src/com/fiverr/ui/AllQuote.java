@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -126,6 +127,11 @@ public class AllQuote extends Activity implements OnClickListener{
 		btn_mSortByOldest = (LinearLayout)findViewById(R.id.btn_sort_by_oldest);
 		btn_sort_by_rating = (LinearLayout)findViewById(R.id.btn_sort_by_rating);
 		
+		btn_mSortByNewest.setBackgroundColor(Color.parseColor("#c9653f"));
+		btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
+		btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
+		
+		
 		imgloader = new ImageLoader(getApplicationContext());
 		/////----------------------------------
 		kqDbAdapter = KqDatabaseAdapter.createInstance(getApplicationContext());
@@ -147,9 +153,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		btn_mSortByOldest.setOnClickListener(this);
 		btn_sort_by_rating.setOnClickListener(this);
 		
-		btn_mSortByNewest.setBackgroundColor(Color.parseColor("#c9653f"));
-		btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
-		btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
+		
 		
 		pager.setOnPageChangeListener(new OnPageChangeListener() {
 			
@@ -511,4 +515,6 @@ public class AllQuote extends Activity implements OnClickListener{
 		Intent openInChooser = new Intent(intent);
 		startActivity(openInChooser);
 	}
+	
+   
 }

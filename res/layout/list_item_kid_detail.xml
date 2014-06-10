@@ -47,7 +47,8 @@
                 android:layout_marginTop="3dp"
                 android:text="Nick Name"
                 android:textColor="#004372"
-                android:textSize="15sp" />
+                android:textSize="15sp" 
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/kidAge"
@@ -56,7 +57,8 @@
                 android:layout_marginTop="3dp"
                 android:text="Age: 3    Male"
                 android:textColor="#004372"
-                android:textSize="15sp" />
+                android:textSize="15sp" 
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
