@@ -4,18 +4,30 @@
     android:layout_height="match_parent"
     android:background="@drawable/app_main_bg"
     android:orientation="vertical" >
-
-    <TextView
+	<RelativeLayout 
+	 android:layout_width="match_parent"
+     android:layout_height="75dp"
+	 android:gravity="bottom|center"
+	 android:paddingBottom="10dp">
+	   <TextView
         android:layout_width="fill_parent"
-        android:layout_height="75dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"        
+        android:text="Kids Profile"
+        android:textColor="@color/black"
         android:gravity="center"
-        android:text="My Kids"
-        android:textColor="#fc9400"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textSize="17sp"
+        android:textStyle="bold" /> 
+        <ImageView
+            android:id="@+id/iv_add_quote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_kid" 
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp" />
+	</RelativeLayout>
+    
 
-    <LinearLayout
+    <!-- <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="25dp" 
         android:gravity="right">
@@ -26,7 +38,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/add_kid" 
             android:layout_marginRight="10dp"/>
-    </LinearLayout>
+    </LinearLayout> -->
 
     <ListView
         android:id="@+id/listKids"

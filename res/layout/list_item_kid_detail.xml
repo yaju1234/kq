@@ -2,11 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_each_row"
     android:layout_width="fill_parent"
-    android:layout_height="100dp"
+    android:layout_height="110dp"
     android:background="#68bffd"
     android:gravity="center|left"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp"
+    android:paddingBottom="8dp"
     android:orientation="horizontal" >
 
     <com.fiverr.ui.CircleImageView
@@ -44,7 +44,7 @@
                 android:id="@+id/nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="2dp"
                 android:text="Nick Name"
                 android:textColor="#004372"
                 android:textSize="15sp" 
@@ -54,7 +54,7 @@
                 android:id="@+id/kidAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="2dp"
                 android:text="Age: 3    Male"
                 android:textColor="#004372"
                 android:textSize="15sp" 

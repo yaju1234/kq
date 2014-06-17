@@ -21,7 +21,7 @@ public class UserFunctions {
 	private static String login_tag ="login";
 	private static String insert_quote_tag ="inser_Quote";
 	private static String quote_tag = "quoteSelect";
-	private static String quote_tag_all = "quoteSelectAll";
+	private static String quote_tag_all = "quoteSelectAndroid";
 	private static String create_kid_profile_tag ="inser_kid_profile";
 	private static String rate_quote_tag="rate";
 	private static String mark_fav_quote_tag="mark_fav";
@@ -185,11 +185,26 @@ public class UserFunctions {
 		
 	}
 	
-	public JSONObject getAllQuotes(){
+	public JSONObject getAllQuotes(String parent_ID,String sort_type_select,int index_value){
 	
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("tag", quote_tag_all));
-		params.add(new BasicNameValuePair("parent_id", "0"));
+		params.add(new BasicNameValuePair("parent_id", parent_ID));
+		Log.e("parent_ID", parent_ID);
+		
+		if(sort_type_select.equalsIgnoreCase("ASC")){
+			params.add(new BasicNameValuePair("sort", all_quote_asc));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}else if(sort_type_select.equalsIgnoreCase("DESC")){
+			params.add(new BasicNameValuePair("sort", all_quote_desc));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}else if(sort_type_select.equalsIgnoreCase("RATE")){
+			params.add(new BasicNameValuePair("sort", all_quote_rate));
+			params.add(new BasicNameValuePair("start_index", ""+index_value));
+			params.add(new BasicNameValuePair("items_per_page", "20"));
+		}
 		//
 		JSONObject jsonObject = jsonParser.getJSONFromUrl(APIUrl, params);
 		System.out.println("!--"+jsonObject.toString());
@@ -271,7 +286,4 @@ public class UserFunctions {
 		JSONObject jsonObject = jsonParser.getJSONFromUrl(APIUrl, params);
 		return jsonObject;
 	}
-	
-	
-
 }

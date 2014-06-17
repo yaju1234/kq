@@ -83,15 +83,15 @@ public class EditKidProfile extends Activity {
 		Intent intent = getIntent();
 		KidID = intent.getIntExtra("kid_id", 0)+"".trim();
 		KidArray = new ArrayList<Kid>();
-		cTypeFace = Typeface.createFromAsset(getAssets(),
-				"GochiHand-Regular.ttf");
+		/*cTypeFace = Typeface.createFromAsset(getAssets(),
+				"GochiHand-Regular.ttf");*/
 		KidName = (EditText) findViewById(R.id.editText1);
 		NickName = (EditText) findViewById(R.id.editText2);
 		Age = (EditText) findViewById(R.id.editText3);
 		About = (EditText) findViewById(R.id.editText4);
 		iv_profile_pic=(ImageView)findViewById(R.id.iv_profile_pic);
 		btnUploadImage = (Button) findViewById(R.id.button1);
-		btnUploadImage.setTypeface(cTypeFace);
+		//btnUploadImage.setTypeface(cTypeFace);
 		//btnUploadImage.setVisibility(View.GONE);
 		male = (RadioButton)findViewById(R.id.radio0);
 		female = (RadioButton)findViewById(R.id.radio1);

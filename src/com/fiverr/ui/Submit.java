@@ -30,7 +30,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,7 +48,6 @@ public class Submit extends Activity{
 	final Context context=this;
 	private String image="",video="",avg_rate="0";
 	private int kid_id=0;
-	//private Typeface cTypeface;
 	private EditText eQuote;
 	private Button  btnImageUploader,btnVideoUploader,btnSubmit;
 	private String kidsImagePath;
@@ -68,22 +66,21 @@ public class Submit extends Activity{
 		Intent getKidIdIntent = getIntent();
 		kid_id = getKidIdIntent.getExtras().getInt("kid_id");
 		eQuote =(EditText) findViewById(R.id.editText1);
-		//btnImageUploader = (Button) findViewById(R.id.button1);
 		btnVideoUploader = (Button) findViewById(R.id.button2);
 		btnSubmit =(Button) findViewById(R.id.button3);
 		customVideoView = (CustomVideoView)findViewById(R.id.videoQuote);
 		imgKid = (ImageView)findViewById(R.id.imgKid);
-		//btnImageUploader.setTypeface(cTypeface);
-		//btnImageUploader.setVisibility(View.GONE);
-		//btnSubmit.setTypeface(cTypeface);
-		//btnVideoUploader.setTypeface(cTypeface);
-		//btnVideoUploader.setVisibility(View.GONE);
 		btnSubmit.setOnClickListener( new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				new PostQuote().execute(""+kid_id,eQuote.getText().toString().trim(),kidsImagePath,"0");
+				if(eQuote.getText().toString().trim().length()>0){
+					new PostQuote().execute(""+kid_id,eQuote.getText().toString().trim(),kidsImagePath,"0");	
+				}else{
+					Toast.makeText(getApplicationContext(), "Please enter Post", Toast.LENGTH_LONG).show();
+				}
+				
 			}
 		});
 		
@@ -94,20 +91,13 @@ public class Submit extends Activity{
 			public void onClick(View v) {
 				
 				
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-						context);
-		 
-					// set title
-					alertDialogBuilder.setTitle("Subbmit Post");
-		 
-					// set dialog message
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);		 
+				alertDialogBuilder.setTitle("Subbmit Post");					
 					alertDialogBuilder
 						.setMessage("Select fle type")
-						.setCancelable(false)
+						.setCancelable(true)
 						.setPositiveButton("Image",new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, close
-								// current activity
+							public void onClick(DialogInterface dialog,int id) {								
 								imgflag = 1;
 								Intent intent = new Intent();
 								intent.setType("image/*");
@@ -118,8 +108,6 @@ public class Submit extends Activity{
 						  })
 						.setNegativeButton("Video",new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,int id) {
-								// if this button is clicked, just close
-								// the dialog box and do nothing
 								imgflag = 2;
 								Intent intent = new Intent();
 								intent.setType("video/*");
@@ -127,38 +115,16 @@ public class Submit extends Activity{
 								startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_IMAGE);
 								dialog.cancel();
 							}
-						});
-		 
-						// create alert dialog
-						AlertDialog alertDialog = alertDialogBuilder.create();
-		 
-						// show it
+						});	 
+						
+						AlertDialog alertDialog = alertDialogBuilder.create();						
 						alertDialog.show();
 					}
 				});
-				/*
-				// Intent open gallery
-				
-				try {
-					Intent intent = new Intent();
-					intent.setType("image/*");
-					intent.setAction(Intent.ACTION_GET_CONTENT);
-					startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					Toast.makeText(getApplicationContext(),
-							"Error",
-							Toast.LENGTH_LONG).show();
 				}
-				
-			*/}
-		//});
-
 		
-	//}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		switch(requestCode){
 		
 		case PICK_IMAGE:
@@ -167,10 +133,10 @@ public class Submit extends Activity{
 				String filePath = null;
 				
 				try{
-					// OI File Manager
+					
 					String filemanagerstring= selectedImageUri.getPath();
 					Log.d("Filemanager String",filemanagerstring);
-					//Media Gallery
+					
 					Log.d("Selected ImagePath",""+getPath(selectedImageUri));
 						kidsImagePath =getPath(selectedImageUri);
 						File imgFile = new  File(kidsImagePath);
@@ -180,7 +146,6 @@ public class Submit extends Activity{
 							btnVideoUploader.setVisibility(View.GONE);
 							if(imgFile.exists()){
 							    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-							    //Drawable d = new BitmapDrawable(getResources(), myBitmap);
 							    imgKid.setImageBitmap(myBitmap);
 
 							}
@@ -201,7 +166,7 @@ public class Submit extends Activity{
 				}
 			}
 		}
-		//super.onActivityResult(requestCode, resultCode, data);
+		
 	}
 	
 	 public String getPath(Uri uri) {
@@ -216,20 +181,11 @@ public class Submit extends Activity{
 		ProgressDialog pDialog;
 		@Override
 		protected String doInBackground(String... param) {
-			// TODO Auto-generated method stub
+		
 			try {
 			SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
 			UserFunctions userfunction = new UserFunctions();
-			/*Log.d("Data Tag", "parent_id:"+settings.getString("Parent_ID", "0").toString()+" Kid_ID:"+kid_id+" Quote:"+eQuote.getText().toString().trim()+" "+image+","+video+","+avg_rate);
-			JSONObject  json = userfunction.insertQuote(settings.getString("Parent_ID", "0").toString(), ""+kid_id, eQuote.getText().toString().trim(), image, video, avg_rate);			
-			String res = json.getString("success");
-			if(Integer.parseInt(res)==1){
-				
-				//Toast.makeText(Submit.this, "Quote posted", Toast.LENGTH_LONG).show();
-				finish();
-				
-			}
-			*/
+			
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpContext localContext = new BasicHttpContext();					
 		   	HttpPost httpPost = new HttpPost("http://playgroundhumor.com/demo/webservice/mywebservice.php");
@@ -261,7 +217,7 @@ public class Submit extends Activity{
 	            Log.e("TAG","Response "+ response_str);
 				return response_str;		
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				pDialog.dismiss();
 				e.printStackTrace();
 				return null;
@@ -270,7 +226,7 @@ public class Submit extends Activity{
 		
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
+			
 			pDialog = new ProgressDialog(Submit.this);
 			pDialog.setTitle("Talking To Server");
 			pDialog.setMessage("Creating Quote");

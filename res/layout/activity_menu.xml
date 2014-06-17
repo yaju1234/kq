@@ -181,7 +181,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="2dp"
                                     android:gravity="center"
-                                    android:text="My Kid Posts"
+                                    android:text="My Kids Posts"
                                     android:textColor="#0062a0"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -227,7 +227,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:gravity="center"
-                                android:text="Submit posts"
+                                android:text="Submit"
                                 android:textColor="#0062a0"
                                 android:textSize="16sp" />
                         </LinearLayout>

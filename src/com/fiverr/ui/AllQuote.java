@@ -1,14 +1,12 @@
 package com.fiverr.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.color;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -18,13 +16,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,88 +34,67 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.fiverr.db.KqDatabaseAdapter;
 import com.fiverr.helper.Constant;
 import com.fiverr.helper.ImageLoader;
 import com.fiverr.helper.PostAdapter;
 import com.fiverr.helper.UserFunctions;
-import com.fiverr.model.Kid;
 import com.fiverr.model.Quote;
 
 public class AllQuote extends Activity implements OnClickListener{
 	final Context context=this;
 	private String tempParentID;
 	private String rate_parent_id,rate_quote_id,rate;
-	private int index = -1;
-	private List<Quote> QuoteArray;
-	//private ViewFlipper flipper;
+	private List<Quote> QuoteArray;	
 	private Quote quote;
-	private Kid kid;
-	//private Typeface cTypeface;
-	private KqDatabaseAdapter kqDbAdapter;
-	
+	private KqDatabaseAdapter kqDbAdapter;	
 	float initialX;
 	private SharedPreferences settings ;
-	ProgressDialog pDialog;
-	//--------Quote Share Test----------
-	
-	private ImageLoader imgloader;
-	//
+	ProgressDialog pDialog;	
 	private static String KEY_SUCCESS = "success";
-	private static String KEY_ERROR = "error";
-	
-	private int pos = 0;
-	private int cur_pos=1;
-	
-	private String quote_type;
-	
+	private String quote_type;	
 	private LinearLayout btn_mSortByNewest;
 	private LinearLayout btn_mSortByOldest;
-	private LinearLayout btn_sort_by_rating;
-	
-	private int Quote_pos = 0;
-	
-	private double avg_rate;
-	
+	private LinearLayout btn_sort_by_rating;	
+	private int Quote_pos = 0;	
+	private double avg_rate;	
 	private RatingBar tv_mAvgRating;
-	private TextView tv_mHeading;
-	
+	private TextView tv_mHeading;	
 	private String sort_type_select = "ASC";
 	private int all_quote_index = 0;
 	private int fav_quote_index = 0;
 	private int kid_quote_index = 0;
-	
 	public int selected_index = 0;
-	private boolean mPageEnd = false;  
-	
+	private boolean mPageEnd = false; 	
 	public ViewPager pager;
+	private int total_count = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ac_image_pager);
-		
+		setContentView(R.layout.ac_image_pager);		
 		tv_mHeading = (TextView)findViewById(R.id.quote_heading);
-		pager = (ViewPager)findViewById(R.id.pager);
-		
+		pager = (ViewPager)findViewById(R.id.pager);		
 		Intent intent = getIntent();
 		tempParentID = intent.getStringExtra("test");
 		quote_type = intent.getStringExtra("quote_type");
 		QuoteArray = new ArrayList<Quote>();
-		//cTypeface = Typeface.createFromAsset(getAssets(), "GochiHand-Regular.ttf");	
+			
 		
 		if(quote_type.equals("fav")){
 			tv_mHeading.setText("Favourites Posts");
 			fav_quote_index = 0;
+			total_count = 0;
 			QuoteArray.clear();
 		}else if(quote_type.equals("all")){
 			tv_mHeading.setText("Browse Posts");
 			all_quote_index = 0;
+			total_count = 0;
 			QuoteArray.clear();
 		}else if(quote_type.equals("kid_qoute")){
 			tv_mHeading.setText("kid's Posts");
 			kid_quote_index = 0;
+			total_count = 0;
 			QuoteArray.clear();
 		}
 		btn_mSortByNewest = (LinearLayout)findViewById(R.id.btn_sort_by_newest);
@@ -132,8 +106,8 @@ public class AllQuote extends Activity implements OnClickListener{
 		btn_sort_by_rating.setBackgroundColor(Color.parseColor("#7ab9f3"));
 		
 		
-		imgloader = new ImageLoader(getApplicationContext());
-		/////----------------------------------
+		new ImageLoader(getApplicationContext());
+		
 		kqDbAdapter = KqDatabaseAdapter.createInstance(getApplicationContext());
 		if(kqDbAdapter.fetChValue()!=null){
 			Constant.kqArrRating = kqDbAdapter.fetChValue();
@@ -162,15 +136,14 @@ public class AllQuote extends Activity implements OnClickListener{
 				selected_index = arg0;
 				
 			}
-			 boolean callHappened;
-			@Override
+			 @Override
 			public void onPageScrolled(int position, float arg1, int arg2) {
 				
-				 if( mPageEnd && position == selected_index /*&& !callHappened*/)
+				 if( mPageEnd && position == selected_index)
 			        {
 			            Log.d(getClass().getName(), "Okay");
 			            mPageEnd = false;//To avoid multiple calls. 
-			          //  callHappened = true;
+			         
 			            if(position == QuoteArray.size()-1){
 							if(quote_type.equals("all")){
 								all_quote_index = all_quote_index + 20;
@@ -179,7 +152,10 @@ public class AllQuote extends Activity implements OnClickListener{
 							}else if(quote_type.equals("kid_qoute")){
 								kid_quote_index = kid_quote_index + 20;
 							}
-							new GetQuotes().execute();
+							if(total_count> position){
+								new GetQuotes().execute();
+							}
+							
 						}
 			        }else
 			        {
@@ -207,10 +183,9 @@ public class AllQuote extends Activity implements OnClickListener{
 	
 	class GetQuotes extends AsyncTask<String, String, String>{
 		
-		//private JSONObject jObj;
-		private JSONArray jArray;
-		JSONObject jsonObject,jsonObject2;
 		
+		private JSONArray jArray;
+		JSONObject jsonObject,jsonObject2;		
 		@Override
 		protected String doInBackground(String... arg0) {
 			
@@ -220,10 +195,10 @@ public class AllQuote extends Activity implements OnClickListener{
 			jsonObject = userfunction.getFavQuotes(tempParentID,sort_type_select,fav_quote_index);
 		}else if(quote_type.equals("all")){
 			if(settings.getString("Parent_ID", "0").equals("0")){
-				jsonObject =userfunction.getQuotes("0",sort_type_select,all_quote_index);
+				jsonObject =userfunction.getAllQuotes("0",sort_type_select,all_quote_index);
 			}else{
-				jsonObject =userfunction.getQuotes("0",sort_type_select,all_quote_index);
-				//jsonObject =userfunction.getQuotes(settings.getString("Parent_ID", "0"));
+				jsonObject =userfunction.getAllQuotes(settings.getString("Parent_ID", "0"),sort_type_select,all_quote_index);
+				
 			}
 		}else if(quote_type.equals("kid_qoute")){
 			jsonObject =userfunction.getQuotes(tempParentID,sort_type_select,kid_quote_index);
@@ -236,6 +211,7 @@ public class AllQuote extends Activity implements OnClickListener{
 				
 				//finish();
 				}else{
+					//total_count = Integer.parseInt(jsonObject.getString("total_count"));
 					jArray = jsonObject.getJSONArray("data");
 					for(int i=0;i<jArray.length();i++){
 						JSONObject jObj =jArray.getJSONObject(i);						
@@ -264,7 +240,7 @@ public class AllQuote extends Activity implements OnClickListener{
 						quote.setChild_name(jObj.getString("name"));
 						quote.setChild_gender(jObj.getString("gender"));
 						if(jObj.has("isfavquate")) {
-						    //it has it, do appropriate processing
+						    
 							quote.setIsfavQuote(""+jObj.getInt("isfavquate"));
 						}else{
 							quote.setIsfavQuote("0");
@@ -309,15 +285,13 @@ public class AllQuote extends Activity implements OnClickListener{
 		
 		@Override
 		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			Log.e("Size",""+QuoteArray.size());
 			
 			if(QuoteArray.size()==0){
 				finish();
 			}
-			else{
-				
+			else{	
 				
 				PostAdapter adapter ;
 				if(quote_type.equals("fav")){
@@ -391,7 +365,12 @@ public class AllQuote extends Activity implements OnClickListener{
 				
 				if(Integer.parseInt(success)==1){
 					Log.d("Fav Quote","Sucess marking fav");
-					QuoteArray.get(Quote_pos).setIsfavQuote("1");
+					
+					if(QuoteArray.get(Quote_pos).getIsfavQuote().equals("1")){
+						QuoteArray.get(Quote_pos).setIsfavQuote("0");
+					}else{
+						QuoteArray.get(Quote_pos).setIsfavQuote("1");
+					}
 				}else{
 					Log.d("Fav Quote","Fails marking fav");
 				}
@@ -466,6 +445,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			all_quote_index = 0;
 			kid_quote_index = 0;
 			fav_quote_index = 0;
+			total_count = 0;
 			
 			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#c9653f"));
 			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));
@@ -479,6 +459,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			all_quote_index = 0;
 			kid_quote_index = 0;
 			fav_quote_index = 0;
+			total_count = 0;
 			
 			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#7ab9f3"));
 			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#c9653f"));
@@ -488,11 +469,12 @@ public class AllQuote extends Activity implements OnClickListener{
 			new GetQuotes().execute();
 			
 		}else if(v == btn_sort_by_rating){	
-			//Toast.makeText(getApplicationContext(), "aaa", 2000).show();
+			
 			sort_type_select = "RATE";
 			all_quote_index = 0;
 			kid_quote_index = 0;
 			fav_quote_index = 0;
+			total_count = 0;
 			
 			btn_mSortByNewest.setBackgroundColor(Color.parseColor("#7ab9f3"));
 			btn_mSortByOldest.setBackgroundColor(Color.parseColor("#7ab9f3"));

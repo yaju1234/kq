@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bgni" >
+      android:background="@drawable/app_main_bg" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,19 +19,30 @@
             android:text="Upload Posts"
             android:textColor="#000000"
             android:textSize="18sp" />
+        
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center|left"
+            android:text="Enter Posts"
+            android:paddingLeft="20dp"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="178dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="#80c7fc"
             android:ems="10"
             android:gravity="top|left"
-            android:hint="Enter Posts"
+            android:hint="Write your Posts here"
             android:inputType="textMultiLine"
             android:padding="5dp"
-            android:textColor="#000000" >
+            android:textColor="#78b9f9" >
         </EditText>
 
         <RelativeLayout
@@ -67,6 +78,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="Select File" />
 
         </RelativeLayout>

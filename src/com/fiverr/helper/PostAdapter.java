@@ -130,8 +130,10 @@ public class PostAdapter extends PagerAdapter {
 					iv_fav.setImageResource(R.drawable.fav_quote);
 					act.callMarkAsFav(kid.getQuote_Id(),position);	
 				}else{
-					Toast.makeText(act, "You already marked it as favourite", Toast.LENGTH_SHORT)
-					.show();
+					/*Toast.makeText(act, "You already marked it as favourite", Toast.LENGTH_SHORT)
+					.show();*/
+					iv_fav.setImageResource(R.drawable.disable_quote_fav);
+					act.callMarkAsFav(kid.getQuote_Id(),position);	
 				}
 				
 			}
