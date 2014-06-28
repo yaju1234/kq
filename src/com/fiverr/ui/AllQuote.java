@@ -68,6 +68,7 @@ public class AllQuote extends Activity implements OnClickListener{
 	private boolean mPageEnd = false; 	
 	public ViewPager pager;
 	private int total_count = 0;
+	//private static int TOTAL_COUNT = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 	
@@ -152,10 +153,12 @@ public class AllQuote extends Activity implements OnClickListener{
 							}else if(quote_type.equals("kid_qoute")){
 								kid_quote_index = kid_quote_index + 20;
 							}
-							if(total_count> position){
+							Log.e("Total count", ""+total_count+"      +position"+position);
+							if(total_count-1 > position){
 								new GetQuotes().execute();
+							}else{
+								Toast.makeText(getApplicationContext(), "No more post", Toast.LENGTH_SHORT).show();
 							}
-							
 						}
 			        }else
 			        {
@@ -169,11 +172,9 @@ public class AllQuote extends Activity implements OnClickListener{
 		        {
 		            mPageEnd = true;
 		        }
-				
 			}
 		});
 	}
-	
 	
 	private boolean isOnline()  {
 	    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -182,7 +183,6 @@ public class AllQuote extends Activity implements OnClickListener{
 	}
 	
 	class GetQuotes extends AsyncTask<String, String, String>{
-		
 		
 		private JSONArray jArray;
 		JSONObject jsonObject,jsonObject2;		
@@ -198,7 +198,6 @@ public class AllQuote extends Activity implements OnClickListener{
 				jsonObject =userfunction.getAllQuotes("0",sort_type_select,all_quote_index);
 			}else{
 				jsonObject =userfunction.getAllQuotes(settings.getString("Parent_ID", "0"),sort_type_select,all_quote_index);
-				
 			}
 		}else if(quote_type.equals("kid_qoute")){
 			jsonObject =userfunction.getQuotes(tempParentID,sort_type_select,kid_quote_index);
@@ -208,10 +207,9 @@ public class AllQuote extends Activity implements OnClickListener{
 			if(jsonObject.getString(KEY_SUCCESS)!=null)
 			
 				if(Integer.parseInt(jsonObject.getString(KEY_SUCCESS))==0){
-				
 				//finish();
 				}else{
-					//total_count = Integer.parseInt(jsonObject.getString("total_count"));
+					total_count = Integer.parseInt(jsonObject.getString("total_count"));
 					jArray = jsonObject.getJSONArray("data");
 					for(int i=0;i<jArray.length();i++){
 						JSONObject jObj =jArray.getJSONObject(i);						

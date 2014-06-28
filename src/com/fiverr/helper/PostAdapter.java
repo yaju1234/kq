@@ -68,8 +68,8 @@ public class PostAdapter extends PagerAdapter {
 		final ProgressBar bar = (ProgressBar)convertView.findViewById(R.id.progressBar1);
 		
 		if(quote_type.equals("fav")){
-			ll_fav.setVisibility(View.GONE);
-			ll_rate.setVisibility(View.GONE);
+			ll_fav.setVisibility(View.INVISIBLE);
+			ll_rate.setVisibility(View.INVISIBLE);
 		}
 		final Quote kid = kids.get(position);
 		

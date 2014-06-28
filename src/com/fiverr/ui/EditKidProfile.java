@@ -421,7 +421,7 @@ public class EditKidProfile extends Activity {
 						entity.addPart("is_image_change", new StringBody(is_image_change));
 						if(is_image_change.equals("1")){
 							Log.e("image", profileImagePath);
-							entity.addPart("image", new FileBody(new File(profileImagePath)));
+							entity.addPart("file", new FileBody(new File(profileImagePath)));
 						}
 						
 						httpPost.setEntity(entity);
