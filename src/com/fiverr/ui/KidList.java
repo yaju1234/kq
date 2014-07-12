@@ -19,11 +19,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class KidList extends Activity{
 	
@@ -105,7 +104,15 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 				}
 			}else{
 				//do nothing
-				finish();
+				//finish();
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+					Toast.makeText(getApplicationContext(), "Please Create Kids Profile", Toast.LENGTH_LONG).show();
+						
+					}
+				});
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

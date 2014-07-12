@@ -42,7 +42,7 @@
             android:hint="Write your Posts here"
             android:inputType="textMultiLine"
             android:padding="5dp"
-            android:textColor="#78b9f9" >
+            android:textColor="#000000" >
         </EditText>
 
         <RelativeLayout
