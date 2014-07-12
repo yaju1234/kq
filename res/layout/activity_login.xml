@@ -41,7 +41,7 @@
             android:layout_height="fill_parent"
             android:orientation="horizontal"
             android:gravity="center|left"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/text_field" >
 
             <ImageView
@@ -90,7 +90,7 @@
             android:layout_height="fill_parent"
             android:orientation="horizontal"
             android:gravity="center|left"
-            android:paddingLeft="10dp"
+            android:paddingLeft="15dp"
             android:background="@drawable/text_field" >
 
             <ImageView

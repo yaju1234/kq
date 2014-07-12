@@ -181,6 +181,7 @@ switch (view.getId()) {
 
 class CreateUser extends AsyncTask<String, String, String>{
 
+	boolean flag = false;
 	
 	@Override
 	protected void onPreExecute() {
@@ -204,6 +205,14 @@ class CreateUser extends AsyncTask<String, String, String>{
 		JSONObject json= userfunction.registerUser(name, pemail, ppassword, pphone,Gender, pcountry, pstate,pcity);
 		String res = null ;
 		if(json!=null){
+			
+			
+			if(json.getInt(KEY_SUCCESS)== 1){
+				flag = true;
+				finish();
+			}
+			res = json.getString("message");
+			/*
 			if(json.getString(KEY_SUCCESS)!=null){
 				Log.d("JSON", json.toString());
 				res = json.getString(KEY_SUCCESS);
@@ -218,7 +227,7 @@ class CreateUser extends AsyncTask<String, String, String>{
 				}
 					
 			}	
-		}
+		*/}
 		return res;	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -231,7 +240,7 @@ class CreateUser extends AsyncTask<String, String, String>{
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
 		dissmissProgressDialog();
-		if(Integer.parseInt(result)==1){
+		if(flag){
 			Toast.makeText(mcontext, "Thank you for your registration. A activation mail will be sent", Toast.LENGTH_LONG).show();
 		}else{
 			Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();

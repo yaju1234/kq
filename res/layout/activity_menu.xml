@@ -101,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="7dp"
-                            android:text="My favorite"
+                            android:text="My Favorite"
                             android:textColor="#0062a0"
                             android:textSize="22sp" />
                     </LinearLayout>
