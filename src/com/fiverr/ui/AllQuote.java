@@ -1,5 +1,7 @@
 package com.fiverr.ui;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +18,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -34,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.fiverr.db.KqDatabaseAdapter;
 import com.fiverr.helper.Constant;
 import com.fiverr.helper.ImageLoader;
@@ -482,18 +489,30 @@ public class AllQuote extends Activity implements OnClickListener{
 			new GetQuotes().execute();
 		}
 	}
-	public void callShare(String quote_text, String image, String video) {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_SEND);
-		intent.setType("image/*");      
+	public void callShare(String quote_text, String image, String video, ImageView imageQuote) {
+		
+		
+		imageQuote.setDrawingCacheEnabled(true);
 
-		intent.putExtra(Intent.EXTRA_TEXT, "eample");
-		intent.putExtra(Intent.EXTRA_TITLE, "example");
-		intent.putExtra(Intent.EXTRA_SUBJECT, "example");
-		intent.putExtra(Intent.EXTRA_STREAM, image);
+        Bitmap bitmap = imageQuote.getDrawingCache();
+        File root = Environment.getExternalStorageDirectory();
+        File cachePath = new File(root.getAbsolutePath() + "/DCIM/Camera/image.jpg");
+        try {
+            cachePath.createNewFile();
+            FileOutputStream ostream = new FileOutputStream(cachePath);
+            bitmap.compress(CompressFormat.JPEG, 100, ostream);
+            ostream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		Intent openInChooser = new Intent(intent);
-		startActivity(openInChooser);
+
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, quote_text);        
+        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachePath));
+        startActivity(Intent.createChooser(share,"Share via"));
+
 	}
 	
    

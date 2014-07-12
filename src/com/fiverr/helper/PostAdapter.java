@@ -50,7 +50,7 @@ public class PostAdapter extends PagerAdapter {
 		TextView child_gender=(TextView)convertView.findViewById(R.id.textGender);
 		ImageView child_img = (ImageView)convertView.findViewById(R.id.imgKid);
 		TextView child_quote=(TextView)convertView.findViewById(R.id.textQuote);
-		ImageView imageQuote = (ImageView)convertView.findViewById(R.id.imageQuote);
+		final ImageView imageQuote = (ImageView)convertView.findViewById(R.id.imageQuote);
 		child_quote.setMovementMethod(new ScrollingMovementMethod());
 		final LinearLayout ll_fav =(LinearLayout)convertView.findViewById(R.id.ll_fav);
 		final LinearLayout ll_rate =(LinearLayout)convertView.findViewById(R.id.ll_rate);
@@ -200,7 +200,8 @@ public class PostAdapter extends PagerAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//act.callShare(kid.getQuote_Text(),"http://playgroundhumor.com/demo"+kid.getImage_Id(),"http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id());
+				act.callShare(kid.getQuote_Text(),"http://playgroundhumor.com/demo"+kid.getImage_Id(),
+						"http://playgroundhumor.com/demo"+kids.get(position).getVideo_Id(),imageQuote);
 			}
 		});
 		((ViewPager) view).addView(convertView, 0);
