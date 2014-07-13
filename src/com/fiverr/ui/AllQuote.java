@@ -4,16 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,7 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.fiverr.db.KqDatabaseAdapter;
 import com.fiverr.helper.Constant;
 import com.fiverr.helper.ImageLoader;
@@ -48,16 +44,14 @@ import com.fiverr.helper.PostAdapter;
 import com.fiverr.helper.UserFunctions;
 import com.fiverr.model.Quote;
 
-public class AllQuote extends Activity implements OnClickListener{
-	final Context context=this;
+public class AllQuote extends BaseAcivity implements OnClickListener{
+	
 	private String tempParentID;
 	private String rate_parent_id,rate_quote_id,rate;
 	private List<Quote> QuoteArray;	
 	private Quote quote;
 	private KqDatabaseAdapter kqDbAdapter;	
 	float initialX;
-	private SharedPreferences settings ;
-	ProgressDialog pDialog;	
 	private static String KEY_SUCCESS = "success";
 	private String quote_type;	
 	private LinearLayout btn_mSortByNewest;
@@ -75,7 +69,7 @@ public class AllQuote extends Activity implements OnClickListener{
 	private boolean mPageEnd = false; 	
 	public ViewPager pager;
 	private int total_count = 0;
-	//private static int TOTAL_COUNT = 0;
+
 	
 	protected void onCreate(Bundle savedInstanceState) {
 	
@@ -143,8 +137,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			public void onPageSelected(int arg0) {
 				selected_index = arg0;
 				
-			}
-			 @Override
+			}		
 			public void onPageScrolled(int position, float arg1, int arg2) {
 				
 				 if( mPageEnd && position == selected_index)
@@ -173,7 +166,7 @@ public class AllQuote extends Activity implements OnClickListener{
 			        }
 			}
 			
-			@Override
+			
 			public void onPageScrollStateChanged(int arg0) {
 				if(selected_index == QuoteArray.size() - 1)
 		        {
@@ -193,7 +186,7 @@ public class AllQuote extends Activity implements OnClickListener{
 		
 		private JSONArray jArray;
 		JSONObject jsonObject,jsonObject2;		
-		@Override
+		@SuppressLint("NewApi") @Override
 		protected String doInBackground(String... arg0) {
 			
 		UserFunctions userfunction = new UserFunctions();
@@ -271,28 +264,15 @@ public class AllQuote extends Activity implements OnClickListener{
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 			return null;
-		}
-		
-		@Override
+		}	
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pDialog = new ProgressDialog(context);
-			pDialog.setTitle("Talking to server");
-			pDialog.setMessage("Fetching quotes");
-			pDialog.setIndeterminate(false);
-			pDialog.setCancelable(true);
-			pDialog.show();
-			
-		}
-		
-		@Override
+			showProgressDailog();
+		}		
 		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			Log.e("Size",""+QuoteArray.size());
-			
+			super.onPostExecute(result);			
 			if(QuoteArray.size()==0){
 				finish();
 			}
@@ -314,16 +294,10 @@ public class AllQuote extends Activity implements OnClickListener{
 					pager.setCurrentItem(fav_quote_index);
 				}
 			}
-			pDialog.dismiss();
+			dissmissProgressDialog();
 		}
-	}
-	
-	
-	
-	
-	public class RateQuote extends AsyncTask<String[], String, Boolean> {
-
-		@Override
+	}	
+	public class RateQuote extends AsyncTask<String[], String, Boolean> {	
 		protected Boolean doInBackground(String[]... params) {
 			try {
 				UserFunctions userfunction = new UserFunctions();
@@ -342,14 +316,10 @@ public class AllQuote extends Activity implements OnClickListener{
 				e.printStackTrace();
 			}
 			return null;
-		}
-
-		@Override
+		}		
 		protected void onPreExecute() {
 			super.onPreExecute();
 		}
-
-		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			QuoteArray.get(Quote_pos).setIsRated("1");
@@ -389,7 +359,7 @@ public class AllQuote extends Activity implements OnClickListener{
 	public void callRate(final int quote_id, int position, RatingBar avg_rating, final ImageView iv_rate) {
 		tv_mAvgRating=avg_rating;
 		Quote_pos=position;
-		final Dialog dialog = new Dialog(context);
+		final Dialog dialog = new Dialog(AllQuote.this);
 		dialog.setContentView(R.layout.custom_dialog);
 		dialog.setTitle("Rate this Quote");
 		Button dialogBtn = (Button) dialog.findViewById(R.id.Submit);
@@ -410,10 +380,9 @@ public class AllQuote extends Activity implements OnClickListener{
 		dialog.show();
 	}
 	
-	public void callMarkAsFav(int quote_Id, int position) {
-		settings = getSharedPreferences("MYPREFS", 0);
-		Log.d("Parent_ID_STRING",settings.getString("Parent_ID", "0"));
-		if(settings.getString("Parent_ID", "0").equals("0")){
+	public void callMarkAsFav(int quote_Id, int position) {	
+		
+		if(app.info.useid == 0){
 			dialog_box();
 		}else{
 			Quote_pos=position;
@@ -433,7 +402,7 @@ public class AllQuote extends Activity implements OnClickListener{
 
 	DialogInterface.OnClickListener listenerAccept = new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int which) {
-			Intent loginIntent = new Intent(AllQuote.this,Login.class);
+			Intent loginIntent = new Intent(AllQuote.this,LoginAcivity.class);
 			startActivity(loginIntent);
 		}
 	};

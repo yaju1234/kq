@@ -7,85 +7,62 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.fiverr.helper.Constant;
+import com.fiverr.helper.KidListAdapter;
 import com.fiverr.helper.UserFunctions;
 import com.fiverr.model.Kid;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
-public class KidList extends Activity{
+public class KidList extends BaseAcivity{
 	
-private ArrayList<Kid> kids;
+private ArrayList<Kid> kids = new ArrayList<Kid>();
 private Kid kid;
 private String type;
-private ImageView iv_maddQuote;
-private ListView kidlist ;
+private ImageView iv_add_kids_profile;
+private LinearLayout  ll_kid_list ;
 
-@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+protected void onCreate(Bundle savedInstanceState) {	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_kid_list);
-		kidlist = (ListView) findViewById(R.id.listKids);
-		iv_maddQuote = (ImageView)findViewById(R.id.iv_add_quote);
+		ll_kid_list = (LinearLayout) findViewById(R.id.ll_kid_list);
+		iv_add_kids_profile = (ImageView)findViewById(R.id.iv_add_kids_profile);
 		if(Constant.mEditKidFlag == false){
 			Bundle extras = getIntent().getExtras();
 			type = extras.getString("type");
-		}
-		
+		}		
 		if(type.equals("submit")){
-			iv_maddQuote.setVisibility(View.GONE);
-		}
-		
-		kids = new ArrayList<Kid>();
-		new GetKids().execute();
-		
-		iv_maddQuote.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(KidList.this,KidProfile.class);
-				startActivity(intent);
-			}
-		});
-		
-		
+			iv_add_kids_profile.setVisibility(View.GONE);
+		}	
+		iv_add_kids_profile.setOnClickListener(this);
+		new GetKids().execute();			
 	}
-	@Override
 	public void onResume(){
 		super.onResume();
 		if(Constant.mEditKidFlag == true){
 			Constant.mEditKidFlag = false ;
 			new GetKids().execute();
 		}		
+	}	
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.iv_add_kids_profile:
+			Intent intent = new Intent(KidList.this,KidProfile.class);
+			startActivity(intent);
+			break;			
+		}
 	}
-
-
 private class GetKids extends AsyncTask<Void , Void, Void>{
-
-	private JSONArray jArray;
-	ProgressDialog pDialog;
-	@Override
-	protected Void doInBackground(Void... arg0) {
-		// TODO Auto-generated method stub
+	private JSONArray jArray;	
+	protected Void doInBackground(Void... arg0) {	
 		try {
 			kids.clear();
-			UserFunctions user = new UserFunctions();
-			SharedPreferences settings = getSharedPreferences("MYPREFS", 0);
-			Log.d("PREFS STRING",settings.getString("Parent_ID", "0"));
-			JSONObject json =user.getKids(settings.getString("Parent_ID", "0").toString());
+			UserFunctions user = new UserFunctions();				
+			JSONObject json =user.getKids(""+app.info.useid);
 			String res =json.getString("success");
 			if(Integer.parseInt(res)==1){
 				jArray= json.getJSONArray("data");
@@ -103,13 +80,9 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 					kids.add(kid);
 				}
 			}else{
-				//do nothing
-				//finish();
 				runOnUiThread(new Runnable() {
-					
-					@Override
 					public void run() {
-					Toast.makeText(getApplicationContext(), "Please Create Kids Profile", Toast.LENGTH_LONG).show();
+					showToast("Please Create Kids Profile");
 						
 					}
 				});
@@ -121,32 +94,16 @@ private class GetKids extends AsyncTask<Void , Void, Void>{
 		}
 		return null;
 	}
-
-	@Override
 	protected void onPreExecute() {
-		pDialog = ProgressDialog.show(KidList.this, "Talking To Server", "Loading");
+		showProgressDailog();
 	}
-	
-	@Override
 	protected void onPostExecute(Void result) {
-		pDialog.dismiss();
-		
-		ListAdapter adapter = new com.fiverr.helper.ListAdapter(KidList.this, R.layout.list_item_kid_detail, kids ,type);
-		kidlist.setAdapter(adapter);
-		/*kidlist.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,		long arg3) {
-				Intent postQuote = new Intent(KidList.this,Submit.class);
-				postQuote.putExtra("kid_id", kids.get(arg2).getKid_ID());
-				startActivity(postQuote);
-				finish();
-			}
-			
-		});*/
-		
-		
-	}
-	
-}
+		dissmissProgressDialog();
+		for(int i = 0; i<kids.size(); i++){
+			Kid kid = kids.get(i);
+			ll_kid_list.removeAllViews();
+			ll_kid_list.addView(new KidListAdapter(KidList.this, ""+kid.getKid_ID(), kid.getName(), kid.getNick_Name(),type,kid.getGender(),kid.getAge()).mView);
+		}		
+	}	
+ }
 }

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/app_main_bg"
-     android:fillViewport="true">
+    android:fillViewport="true" >
 
     <LinearLayout
         android:id="@+id/widget1"
@@ -11,223 +11,172 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-       <!--  <EditText
-            android:id="@+id/etusername"
+        <LinearLayout
+            android:id="@+id/editText1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-             android:layout_marginBottom="2dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="80dp"
-            android:hint="username" >
-
-            <requestFocus />
-        </EditText> -->
-        
-         <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
-
-        <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/user_icon" />
-
-            </LinearLayout>
-
-        <EditText
-            android:id="@+id/etusername"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="Username"
-            android:imeOptions="actionNext"
-            android:background="@null"
-           >
-
-        </EditText>
-       
-    </LinearLayout>
-
-        <!-- <EditText
-            android:id="@+id/etpassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-           android:layout_marginBottom="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-           android:hint="password"
-            android:inputType="textPassword" /> -->
-            
-             
-         <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
-
-        <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/password_icon" />
-
-            </LinearLayout>
-
-        <EditText
-            android:id="@+id/etpassword"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="Password"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
-            android:background="@null"
-           >
-
-        </EditText>
-       
-    </LinearLayout>
-
-                 <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
-
-        <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/email_icon" />
-
-            </LinearLayout>
-
-        <EditText
-            android:id="@+id/etemail"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="Email"
-            android:imeOptions="actionNext"
+            android:layout_marginTop="90dp"
+            android:background="@xml/input_box_rounded_corner"
             android:inputType="textEmailAddress"
-            android:background="@null"
-           >
-
-        </EditText>
-       
-    </LinearLayout>
-
-         <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
-
-        <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
             android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
+            android:singleLine="true" >
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <LinearLayout
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/phone" />
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/user_icon" />
             </LinearLayout>
 
-        <EditText
-            android:id="@+id/etphone"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="Phone no"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:background="@null"
-           >
+            <EditText
+                android:id="@+id/etusername"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Username"
+                android:imeOptions="actionNext"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
 
-        </EditText>
-       
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@xml/input_box_rounded_corner"
+            android:inputType="textEmailAddress"
+            android:orientation="horizontal"
+            android:singleLine="true" >
+
+            <LinearLayout
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/password_icon" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etpassword"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Password"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@xml/input_box_rounded_corner"
+            android:inputType="textEmailAddress"
+            android:orientation="horizontal"
+            android:singleLine="true" >
+
+            <LinearLayout
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/email_icon" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etemail"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@xml/input_box_rounded_corner"
+            android:inputType="textEmailAddress"
+            android:orientation="horizontal"
+            android:singleLine="true" >
+
+            <LinearLayout
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/phone" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etphone"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Phone no"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/radioGroup1"
@@ -236,8 +185,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal" >
 
             <RadioButton
                 android:id="@+id/radio0"
@@ -265,107 +213,94 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="2dp"
-           android:prompt="@string/country_prompt"
-            />
-
-              <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
+            android:prompt="@string/country_prompt" />
 
         <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@xml/input_box_rounded_corner"
+            android:inputType="textEmailAddress"
             android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
+            android:singleLine="true" >
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <LinearLayout
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/state" />
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/state" />
             </LinearLayout>
 
-        <EditText
-            android:id="@+id/etstate"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="State"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:background="@null"
-           >
-
-        </EditText>
-       
-    </LinearLayout>
-
-              <LinearLayout
-        android:id="@+id/editText1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"
-        android:background="@xml/input_box_rounded_corner"
-       
-       
-        android:singleLine="true"
-       android:orientation="horizontal"
-       android:inputType="textEmailAddress" >
+            <EditText
+                android:id="@+id/etstate"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="State"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@xml/input_box_rounded_corner"
+            android:inputType="textEmailAddress"
             android:orientation="horizontal"
-            android:gravity="center|left"
-            android:paddingLeft="15dp"
-            android:background="@drawable/text_field" >
+            android:singleLine="true" >
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <LinearLayout
+                android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/city" />
+                android:layout_height="fill_parent"
+                android:background="@drawable/text_field"
+                android:gravity="center|left"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp" >
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/city" />
             </LinearLayout>
 
-        <EditText
-            android:id="@+id/etcity"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:hint="City"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:background="@null"
-           >
-
-        </EditText>
-       
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etcity"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="City"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true" >
+            </EditText>
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btnsbmt"
+            android:id="@+id/btn_submit"
             style="@style/CustomStyleButton"
             android:layout_width="match_parent"
             android:layout_height="45dp"

@@ -3,47 +3,35 @@ package com.fiverr.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
 import org.json.JSONObject;
-
 import com.fiverr.ui.R;
 import com.fiverr.helper.UserFunctions;
-
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-public class RegisterUser extends BaseView {
+public class RegisterUser extends BaseAcivity {	
 	
-	final Context mcontext = this;
 	private String Gender="m",Country;
 	private Spinner country;
 	public ProgressDialog pDialog;
 	private EditText username,email,password,state,city,phone;
-	private Button Submit;
-	 private static String KEY_SUCCESS = "success";
-    private static String KEY_ERROR = "error";
+	private Button btn_submit;
+	private static String KEY_SUCCESS = "success";
     private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    List<String> list = new ArrayList<String>();
-    int pos;
+    public List<String> list = new ArrayList<String>();
+    private int pos;
     
-	@Override
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
@@ -55,7 +43,7 @@ public class RegisterUser extends BaseView {
 		city =(EditText) findViewById(R.id.etcity);
 		state =(EditText) findViewById(R.id.etstate);
 		phone = (EditText) findViewById(R.id.etphone);
-		Submit = (Button) findViewById(R.id.btnsbmt);
+		btn_submit = (Button) findViewById(R.id.btn_submit);
 		
 		String[] regionsArray = getResources().getStringArray(R.array.country_arrays);
 		for(int i=0; i<regionsArray.length; i++){
@@ -63,49 +51,14 @@ public class RegisterUser extends BaseView {
 			if(regionsArray[i].equalsIgnoreCase("United States")){
 				pos = i;
 			}
-		}
-		
+		}		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(RegisterUser.this, android.R.layout.simple_spinner_item,list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		country.setAdapter(dataAdapter);
 		country.setSelection(pos);
 		Country = list.get(pos);
-		
-		country.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				
-				Country = list.get(arg2);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				
-				
-			}
-		});
-		Submit.setOnClickListener( new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-					
-				
-				if(isOnline()){
-					if(registrationValidation(username.getText().toString().trim(),password.getText().toString().trim(),email.getText().toString().trim(),
-							phone.getText().toString().trim(),Gender,Country,state.getText().toString().trim(),city.getText().toString().trim())){
-						new CreateUser().execute();
-					}
-					
-					
-				}else{
-						Toast.makeText(mcontext, "No Internet connection", Toast.LENGTH_LONG).show();
-					}
-				
-			}
-		});
-		
+		country.setOnItemSelectedListener(this);
+		btn_submit.setOnClickListener(this);
 		
 	}
 	
@@ -140,7 +93,7 @@ public class RegisterUser extends BaseView {
 			phone.setSelection(st_phone.length());
 			return false;
 		}else if(st_Country.length()==0){
-			Toast.makeText(mcontext, "Please Choose a Country", Toast.LENGTH_LONG).show();
+			showToast("Please Choose a Country");
 			return false;
 		}else if(st_state.length()==0){
 			state.setError("Please Enter Your State");
@@ -155,12 +108,10 @@ public class RegisterUser extends BaseView {
 	}
 	public  boolean isValidEmail(String email) {		
 		return Pattern.compile(EMAIL_PATTERN).matcher(email).matches();
-	}	
-	
-	
+	}		
 	public void onRadioButtonClicked(View view) {
 		boolean checked = ((RadioButton) view).isChecked();
-switch (view.getId()) {
+		switch (view.getId()) {
 		case R.id.radio0:
 			if (checked)
 				Gender = "m";
@@ -172,28 +123,14 @@ switch (view.getId()) {
 		}
 	}
 
-	private boolean isOnline()  {
-	    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo ni = cm.getActiveNetworkInfo();
-	    return (ni != null && ni.isConnected());
-	}
-
-
 class CreateUser extends AsyncTask<String, String, String>{
-
-	boolean flag = false;
-	
-	@Override
+	boolean flag = false;	
 	protected void onPreExecute() {
 		super.onPreExecute();
-		showProgressDailog();
-	
-	}
-	
-	@Override
+		showProgressDailog();	
+	}	
 	protected String doInBackground(String... arg0) {
-		try{
-		Log.d("TEST", Gender +" "+Country);
+		try{		
 		String name =username.getText().toString().trim();
 		String pemail = email.getText().toString().trim();
 		String ppassword = password.getText().toString().trim();
@@ -204,49 +141,51 @@ class CreateUser extends AsyncTask<String, String, String>{
 		UserFunctions userfunction = new UserFunctions();
 		JSONObject json= userfunction.registerUser(name, pemail, ppassword, pphone,Gender, pcountry, pstate,pcity);
 		String res = null ;
-		if(json!=null){
-			
-			
+		if(json!=null){			
 			if(json.getInt(KEY_SUCCESS)== 1){
 				flag = true;
 				finish();
 			}
 			res = json.getString("message");
-			/*
-			if(json.getString(KEY_SUCCESS)!=null){
-				Log.d("JSON", json.toString());
-				res = json.getString(KEY_SUCCESS);
-				if(Integer.parseInt(res)==1){
-					if(pDialog.isShowing())
-						pDialog.dismiss();
-					finish();
-				}
-				else{
-					res = json.getString("message");
-				
-				}
-					
-			}	
-		*/}
+			}
 		return res;	
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;	
-		}
-		
+		}		
 	}
-	
-	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
 		dissmissProgressDialog();
 		if(flag){
-			Toast.makeText(mcontext, "Thank you for your registration. A activation mail will be sent", Toast.LENGTH_LONG).show();
+			showToast("Thank you for your registration. A activation mail will be sent");
 		}else{
-			Toast.makeText(mcontext, result, Toast.LENGTH_LONG).show();
+			showToast(result);
+			}
 		}
-	}
 
 	}
+
+
+	public void onClick(View v) {
+	switch (v.getId()) {
+	case R.id.btn_submit:
+		if(isNetworkAvailable()){
+			if(registrationValidation(username.getText().toString().trim(),password.getText().toString().trim(),email.getText().toString().trim(),
+					phone.getText().toString().trim(),Gender,Country,state.getText().toString().trim(),city.getText().toString().trim())){
+				new CreateUser().execute();
+			}	
+			
+		}else{
+			showToast("No Internet connection");
+			}
+		break;
+
+	}
+	}
+	
+	public void onItemSelected(AdapterView<?> arg0, View arg1,	int arg2, long arg3) {
+		Country = list.get(arg2);
+	}	
 }
 

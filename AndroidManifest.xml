@@ -4,8 +4,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:minSdkVersion="5"
+        android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -15,15 +15,18 @@
         android:allowBackup="true"
         android:icon="@drawable/new_app_icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity android:name="com.fiverr.ui.Splashscreen" android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">"
+        android:name="com.fiverr.application.PlayGroundHumer"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        <activity android:name="com.fiverr.ui.Splashscreen" 
+             android:configChanges="orientation|keyboardHidden|screenSize"
+            >
            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.fiverr.ui.Menu" 
-            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+        <activity android:name="com.fiverr.ui.Dashboard" 
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name="com.fiverr.ui.Submit" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.Quotes" 
@@ -32,9 +35,9 @@
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">         
         </activity>
         <activity android:name="com.fiverr.ui.RegisterUser" 
-            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-        <activity android:name="com.fiverr.ui.Login" 
-            android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name="com.fiverr.ui.LoginAcivity" 
+             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity android:name="com.fiverr.ui.KidProfile" 
             android:screenOrientation="portrait" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
         <activity android:name="com.fiverr.ui.KidList" 

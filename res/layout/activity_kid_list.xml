@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/app_main_bg"
-    android:orientation="vertical" >
-	<RelativeLayout 
-	 android:layout_width="match_parent"
-     android:layout_height="75dp"
-	 android:gravity="bottom|center"
-	 android:paddingBottom="10dp">
-	   <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"        
-        android:text="Kids Profile"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:textSize="17sp"
-        android:textStyle="bold" /> 
-        <ImageView
-            android:id="@+id/iv_add_quote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/add_kid" 
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp" />
-	</RelativeLayout>
-    
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fadingEdge="none"
+    android:fillViewport="true" >
 
-    <!-- <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="25dp" 
-        android:gravity="right">
-
-        <ImageView
-            android:id="@+id/iv_add_quote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/add_kid" 
-            android:layout_marginRight="10dp"/>
-    </LinearLayout> -->
-
-    <ListView
-        android:id="@+id/listKids"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:cacheColorHint="@null"
-        android:divider="@null"
-        android:dividerHeight="1dp"
-        android:scrollbars="none" >
-    </ListView>
+        android:background="@drawable/app_main_bg"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom|center"
+            android:paddingBottom="10dp" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Kids Profile"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iv_add_kids_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/add_kid" />
+        </RelativeLayout>
+        
+        <LinearLayout
+            android:id="@+id/ll_kid_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"   
+            android:orientation="vertical"        
+            >
+        </LinearLayout>
+
+        <!-- <ListView
+            android:id="@+id/listKids"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:cacheColorHint="@null"
+            android:divider="@null"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" >
+        </ListView> -->
+    </LinearLayout>
+
+</ScrollView>

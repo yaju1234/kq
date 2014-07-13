@@ -47,7 +47,7 @@
                     android:orientation="vertical" >
 
                     <LinearLayout
-                        android:id="@+id/ll_Browse"
+                        android:id="@+id/ll_browse"
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
                         android:gravity="center"
@@ -84,7 +84,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_favourite"
+                        android:id="@+id/ll_my_favorite"
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
                         android:gravity="center"
@@ -163,7 +163,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/ll_kids_qoute"
+                                android:id="@+id/ll_kids_posts"
                                 android:layout_width="match_parent"
                                 android:layout_height="fill_parent"
                                 android:gravity="center"
@@ -208,7 +208,7 @@
                         android:orientation="horizontal" >
 
                         <LinearLayout
-                            android:id="@+id/ll_submit_qoute"
+                            android:id="@+id/ll_submit"
                             android:layout_width="fill_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
