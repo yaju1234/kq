@@ -29,7 +29,7 @@ public class BaseAcivity extends Activity implements OnClickListener,OnItemSelec
 			app = (PlayGroundHumer) getApplication();
 			app.setInfo(new UserInfo(this));
 		}
-	}
+	}	
 	public void showProgressDailog() {
 		runOnUiThread(new Runnable() {		
 			public void run() {

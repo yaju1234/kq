@@ -2,12 +2,15 @@ package com.fiverr.ui;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.fiverr.ui.R;
 import com.fiverr.constant.Constant;
 import com.fiverr.helper.UserFunctions;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +58,8 @@ public class LoginAcivity extends BaseAcivity{
 					String res = json.getString(KEY_SUCCESS);
 					if(Integer.parseInt(res)==1){
 						parent_id = Integer.parseInt(json.getString("data"));
-						app.info.setUsrId(parent_id);
+						Log.e("parent_id", ""+parent_id);
+						app.getInfo().setUsrId(parent_id);
 						Intent i = new Intent(LoginAcivity.this,Dashboard.class);
 						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(i);
